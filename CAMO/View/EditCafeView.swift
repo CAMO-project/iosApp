@@ -73,8 +73,7 @@ struct CreateCafeView: View {
         }, label: {
             Text("취소")
         }), trailing: Button(action: {
-            if (inputCafeName == "" || inputCafeAddress == "" || inputCafePhone == ""
-                       || inputBusinessNum == "") {
+            if (inputCafeName == "" || inputCafeAddress == "" || inputCafePhone == ""  || inputBusinessNum == "") {
                 // 하나라도 빈칸이 있는 경우
                 textMsg = false
             } else {

@@ -188,14 +188,35 @@ struct CouponView: View {
     
 }
 
+// MARK: ----refresh user info
+//class UserViewModel: ObservableObject {
+//    func refreshUser() -> User {
+//        getUser()
+//        return user
+//    }
+//}
 
 // MARK: ----ProfileView
 struct ProfileView: View {
-//    @State var userInfo: [String: String] = ["이름": "김공주", "이메일": "kongjukim@naver.com", "전화번호": "01012345678", "회원": "일반 회원"]
+    
+//    @ObservedObject var userViewModel = UserViewModel()
     
     @State var editUserInfo: Bool = false
-    @State private var popQrAlert: Bool = false
+    @State private var popQrAlert: Bool  = false
     @State private var qrScanSettings: Bool = false
+    
+    @State var createCafe = false
+    @State var editCafeInfo = false
+    @State var editCafeMenu = false
+    
+    @State var userInfo: User = getUserWithReturn()
+    
+//    init(userViewModel: UserViewModel = UserViewModel()) {
+//        self.userViewModel = userViewModel
+//        self.editUserInfo = false
+//        self.popQrAlert = false
+//        self.qrScanSettings = false
+//    }
     
     var body: some View {
         VStack {
@@ -242,7 +263,7 @@ struct ProfileView: View {
                                 .font(.system(size: 14))
 //                                .fontWeight(.bold)
                             Spacer()
-                            Text(user.name)
+                            Text(userInfo.name)
                                 .foregroundColor(Color("grayTextColor"))
                                 .font(.system(size: 14))
                         }
@@ -254,7 +275,7 @@ struct ProfileView: View {
                                 .font(.system(size: 14))
 //                                .fontWeight(.bold)
                             Spacer()
-                            Text(user.email)
+                            Text(userInfo.email)
                                 .foregroundColor(Color("grayTextColor"))
                                 .font(.system(size: 14))
                         }
@@ -266,7 +287,7 @@ struct ProfileView: View {
                                 .font(.system(size: 14))
 //                                .fontWeight(.bold)
                             Spacer()
-                            Text(user.phone)
+                            Text(userInfo.phone)
                                 .foregroundColor(Color("grayTextColor"))
                                 .font(.system(size: 14))
                         }
@@ -278,7 +299,7 @@ struct ProfileView: View {
                                 .font(.system(size: 14))
 //                                .fontWeight(.bold)
                             Spacer()
-                            if (user.role == 1) {
+                            if (userInfo.role == 1) {
                                 Text("카페 사장님")
                                     .foregroundColor(Color("grayTextColor"))
                                     .font(.system(size: 14))
@@ -347,7 +368,126 @@ struct ProfileView: View {
                 }
                 
 //                EditCafeRow(userRole: userInfo["회원"] ?? "일반 회원", cafeName: "")
-                EditCafeRow()
+                VStack {
+                    if (userInfo.role == 0) {
+                        VStack {
+                            Text("카페 사장님이신가요?")
+                                .font(.system(size: 14))
+                                .foregroundColor(.gray)
+                                .padding(.bottom, 10)
+                            
+                            Button {
+                                createCafe = true
+                            } label: {
+                                Text("카페 등록하러 가기")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .padding(.vertical, 20)
+                            .background(Color("mainColor"))
+                            .cornerRadius(16)
+                            .fullScreenCover(isPresented: $createCafe) {
+                                NavigationView {
+                                    CreateCafeView(isPresented: $createCafe)
+                                    //                        .navigationBarHidden(false)
+                                        .navigationBarBackButtonHidden(false)
+                                }
+                                
+                            }
+                            
+                            
+                        }
+                        .padding(.horizontal, 30)
+                        
+                    } else if (userInfo.role == 1) {
+                        VStack {
+                            Text("카페 \(cafe.cafeName)")
+                                .font(.system(size: 18))
+                                .foregroundColor(Color("mainPointColor"))
+                                .padding(.bottom, 10)
+                                .padding(.top, 20)
+                            
+                            HStack {
+                                
+                                // 카페 정보 수정 버튼
+                                Button {
+                                    editCafeInfo = true
+                                } label: {
+                                    VStack {
+                                        Image(systemName: "book")
+                                            .environment(\.symbolVariants, .none)
+                                            .font(.system(size: 24))
+                                            .foregroundColor(Color("mainPointColor"))
+                                            .padding(.bottom, 10)
+                                        
+                                        Text("카페 정보")
+                                            .font(.system(size: 16))
+                                            .foregroundColor(Color("mainPointColor"))
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 20)
+                                    .background(Color("bgColor"))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(Color("mainPointColor"), lineWidth: 2)
+                                        
+                                    )
+                                    
+                                }
+                                .padding(.trailing, 10)
+                                .fullScreenCover(isPresented: $editCafeInfo) {
+                                    NavigationView {
+                                        EditCafeInfoView(isPresented: $editCafeInfo)
+                                            .navigationBarBackButtonHidden(false)
+                                    }
+                                }
+                                
+                                
+                                // 카페 메뉴 수정 버튼
+                                Button {
+                                    editCafeMenu = true
+                                } label: {
+                                    VStack {
+                                        Image(systemName: "drop")
+                                            .environment(\.symbolVariants, .none)
+                                            .font(.system(size: 24))
+                                            .foregroundColor(Color("mainPointColor"))
+                                            .padding(.bottom, 10)
+                                        
+                                        Text("카페 메뉴")
+                                            .font(.system(size: 16))
+                                            .foregroundColor(Color("mainPointColor"))
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 20)
+                                    .background(Color("bgColor"))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(Color("mainPointColor"), lineWidth: 2)
+                                        
+                                    )
+                                    
+                                }
+                                .padding(.leading, 10)
+                                
+                                
+                                
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.bottom, 20)
+                            
+                            
+                        }
+                        .frame(maxWidth: .infinity)
+                        .background(Color("bgColor"))
+                        .border(Color.black.opacity(0), width: 0)
+                        .cornerRadius(20)
+                        .padding(.horizontal, 30)
+                        .padding(.bottom, 20)
+                        .shadow(color: .gray.opacity(0.4), radius: 5, x: 0, y: 0)
+                    }
+                }
                 
                 HStack {
                     Button {
@@ -376,7 +516,7 @@ struct ProfileView: View {
             
             
             
-            if (user.role == 1) {
+            if (userInfo.role == 1) {
 
                 ZStack {
 
@@ -403,6 +543,22 @@ struct ProfileView: View {
             }
         } // vstack
         .background(Color("bgMainColor"))
+        .refreshable {
+//            self.userViewModel.refreshUser()
+            userInfo = getUserWithReturn()
+            print("새로고침 : \(user)")
+        }
+        .onAppear() {
+//            self.userViewModel.refreshUser()
+            userInfo = getUserWithReturn()
+            print("appear :) \(userInfo)")
+        }
+        .onDisappear() {
+            print("disappear :)")
+        }
+        
+        
+        
     }
     
 }
@@ -555,135 +711,148 @@ struct CouponRow: View {
     } // body
 }
 
-struct EditCafeRow: View {
-    
-    @State var createCafe = false
-    @State var editCafeInfo = false
-    @State var editCafeMenu = false
-    
-    var body: some View {
+//struct EditCafeRow: View {
+//
+//    @State var createCafe = false
+//    @State var editCafeInfo = false
+//    @State var editCafeMenu = false
+//
+//    @State var userInfo: User = getUserWithReturn()
+//
+//    var body: some View {
+//        VStack {
+//            if (userInfo.role == 0) {
+//                VStack {
+//                    Text("카페 사장님이신가요?")
+//                        .font(.system(size: 14))
+//                        .foregroundColor(.gray)
+//                        .padding(.bottom, 10)
+//
+//                    Button {
+//                        createCafe = true
+//                    } label: {
+//                        Text("카페 등록하러 가기")
+//                            .font(.system(size: 16))
+//                            .foregroundColor(.white)
+//                            .frame(maxWidth: .infinity)
+//                    }
+//                    .padding(.vertical, 20)
+//                    .background(Color("mainColor"))
+//                    .cornerRadius(16)
+//                    .fullScreenCover(isPresented: $createCafe) {
+//                        NavigationView {
+//                            CreateCafeView(isPresented: $createCafe)
+//                            //                        .navigationBarHidden(false)
+//                                .navigationBarBackButtonHidden(false)
+//                        }
+//
+//                    }
+//
+//
+//                }
+//                .padding(.horizontal, 30)
+//
+//            } else if (userInfo.role == 1) {
+//                VStack {
+//                    Text("카페 \(cafe.cafeName)")
+//                        .font(.system(size: 18))
+//                        .foregroundColor(Color("mainPointColor"))
+//                        .padding(.bottom, 10)
+//                        .padding(.top, 20)
+//
+//                    HStack {
+//
+//                        // 카페 정보 수정 버튼
+//                        Button {
+//                            editCafeInfo = true
+//                        } label: {
+//                            VStack {
+//                                Image(systemName: "book")
+//                                    .environment(\.symbolVariants, .none)
+//                                    .font(.system(size: 24))
+//                                    .foregroundColor(Color("mainPointColor"))
+//                                    .padding(.bottom, 10)
+//
+//                                Text("카페 정보")
+//                                    .font(.system(size: 16))
+//                                    .foregroundColor(Color("mainPointColor"))
+//                            }
+//                            .frame(maxWidth: .infinity)
+//                            .padding(.vertical, 20)
+//                            .background(Color("bgColor"))
+//                            .overlay(
+//                                RoundedRectangle(cornerRadius: 16)
+//                                    .stroke(Color("mainPointColor"), lineWidth: 2)
+//
+//                            )
+//
+//                        }
+//                        .padding(.trailing, 10)
+//                        .fullScreenCover(isPresented: $editCafeInfo) {
+//                            NavigationView {
+//                                EditCafeInfoView(isPresented: $editCafeInfo)
+//                                    .navigationBarBackButtonHidden(false)
+//                            }
+//                        }
+//
+//
+//                        // 카페 메뉴 수정 버튼
+//                        Button {
+//                            editCafeMenu = true
+//                        } label: {
+//                            VStack {
+//                                Image(systemName: "drop")
+//                                    .environment(\.symbolVariants, .none)
+//                                    .font(.system(size: 24))
+//                                    .foregroundColor(Color("mainPointColor"))
+//                                    .padding(.bottom, 10)
+//
+//                                Text("카페 메뉴")
+//                                    .font(.system(size: 16))
+//                                    .foregroundColor(Color("mainPointColor"))
+//                            }
+//                            .frame(maxWidth: .infinity)
+//                            .padding(.vertical, 20)
+//                            .background(Color("bgColor"))
+//                            .overlay(
+//                                RoundedRectangle(cornerRadius: 16)
+//                                    .stroke(Color("mainPointColor"), lineWidth: 2)
+//
+//                            )
+//
+//                        }
+//                        .padding(.leading, 10)
+//
+//
+//
+//                    }
+//                    .padding(.horizontal, 20)
+//                    .padding(.bottom, 20)
+//
+//
+//                }
+//                .frame(maxWidth: .infinity)
+//                .background(Color("bgColor"))
+//                .border(Color.black.opacity(0), width: 0)
+//                .cornerRadius(20)
+//                .padding(.horizontal, 30)
+//                .padding(.bottom, 20)
+//                .shadow(color: .gray.opacity(0.4), radius: 5, x: 0, y: 0)
+//            }
+//        }
+//        .refreshable {
+//            self.userViewModel.refreshUser()
+//            userInfo = getUserWithReturn()
+//            print("새로고침 : \(user)")
+//        }
+//        .onAppear() {
+//            self.userViewModel.refreshUser()
+//            userInfo = getUserWithReturn()
+//            print("appear :) \(userInfo)")
+//        }
         
-        if (user.role == 0) {
-            VStack {
-                Text("카페 사장님이신가요?")
-                    .font(.system(size: 14))
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 10)
-                
-                Button {
-                    createCafe = true
-                } label: {
-                    Text("카페 등록하러 가기")
-                        .font(.system(size: 16))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                }
-                .padding(.vertical, 20)
-                .background(Color("mainColor"))
-                .cornerRadius(16)
-                .fullScreenCover(isPresented: $createCafe) {
-                    NavigationView {
-                        CreateCafeView(isPresented: $createCafe)
-    //                        .navigationBarHidden(false)
-                            .navigationBarBackButtonHidden(false)
-                    }
-                    
-                }
-                
-                
-            }
-            .padding(.horizontal, 30)
-            
-        } else if (user.role == 1) {
-            VStack {
-                Text("카페 \(cafe.cafeName)")
-                    .font(.system(size: 18))
-                    .foregroundColor(Color("mainPointColor"))
-                    .padding(.bottom, 10)
-                    .padding(.top, 20)
-                
-                HStack {
-                    
-                    // 카페 정보 수정 버튼
-                    Button {
-                        editCafeInfo = true
-                    } label: {
-                        VStack {
-                            Image(systemName: "book")
-                                .environment(\.symbolVariants, .none)
-                                .font(.system(size: 24))
-                                .foregroundColor(Color("mainPointColor"))
-                                .padding(.bottom, 10)
-                            
-                            Text("카페 정보")
-                                .font(.system(size: 16))
-                                .foregroundColor(Color("mainPointColor"))
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 20)
-                        .background(Color("bgColor"))
-                        .overlay(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .stroke(Color("mainPointColor"), lineWidth: 2)
-                                        
-                                )
-                        
-                    }
-                    .padding(.trailing, 10)
-                    .fullScreenCover(isPresented: $editCafeInfo) {
-                        NavigationView {
-                            EditCafeInfoView(isPresented: $editCafeInfo)
-                                .navigationBarBackButtonHidden(false)
-                        }
-                    }
-                    
-                    
-                    // 카페 메뉴 수정 버튼
-                    Button {
-                        editCafeMenu = true
-                    } label: {
-                        VStack {
-                            Image(systemName: "drop")
-                                .environment(\.symbolVariants, .none)
-                                .font(.system(size: 24))
-                                .foregroundColor(Color("mainPointColor"))
-                                .padding(.bottom, 10)
-                            
-                            Text("카페 메뉴")
-                                .font(.system(size: 16))
-                                .foregroundColor(Color("mainPointColor"))
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 20)
-                        .background(Color("bgColor"))
-                        .overlay(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .stroke(Color("mainPointColor"), lineWidth: 2)
-                                        
-                                )
-                        
-                    }
-                    .padding(.leading, 10)
-                    
-                    
-                    
-                }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 20)
-                
-                
-            }
-            .frame(maxWidth: .infinity)
-            .background(Color("bgColor"))
-            .border(Color.black.opacity(0), width: 0)
-            .cornerRadius(20)
-            .padding(.horizontal, 30)
-            .padding(.bottom, 20)
-            .shadow(color: .gray.opacity(0.4), radius: 5, x: 0, y: 0)
-        }
-        
-    }
-}
+//    }
+//}
 
 
 struct EditUserInfoView: View {
@@ -761,6 +930,12 @@ struct EditUserInfoView: View {
         }, label: {
             Text("확인")
         }))
+        .onAppear() {
+            print("appear editUserInfo ◡̎")
+        }
+        .onDisappear() {
+            print("disappear editUserInfo ◡̎")
+        }
         
     } // body
 }

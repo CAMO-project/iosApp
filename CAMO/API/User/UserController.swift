@@ -17,7 +17,6 @@ func login(loginDTO: LoginDTO) -> Bool {
     var isLogin = true
     
     let url = host + "/user/login"
-//    let url = "https://ptsv2.com/t/eaju6-1668843406/post"
     
     // URLRequest 객체 생성 (url 전달)
     var request = URLRequest(url: URL(string: url)!)
@@ -140,6 +139,58 @@ func editUserInfo(editUserDTO: EditUserDTO) {
             print("호출 실패")
         }
     }
+}
+
+func getUser() {
+    let url = host + "/user/id/" + String(user.userId)
     
+    // URLRequest 객체 생성 (url 전달)
+    var request = URLRequest(url: URL(string: url)!)
+    // 메소드 지정
+    request.httpMethod = "GET"
+    // 헤더 정보 설정
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    AF.request(request).responseDecodable(of:User.self) { response in
+        switch response.result {
+        case .success:
+            print("호출 성공")
+            
+            user = response.value ?? user
+            print(user)
+            
+        case .failure(_):
+            print(response.result)
+            print("호출 실패")
+        }
+    }
+    
+}
+
+func getUserWithReturn() -> User {
+    let url = host + "/user/id/" + String(user.userId)
+    
+    // URLRequest 객체 생성 (url 전달)
+    var request = URLRequest(url: URL(string: url)!)
+    // 메소드 지정
+    request.httpMethod = "GET"
+    // 헤더 정보 설정
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    AF.request(request).responseDecodable(of:User.self) { response in
+        switch response.result {
+        case .success:
+            print("호출 성공")
+            
+            user = response.value ?? user
+            print(user)
+            
+        case .failure(_):
+            print(response.result)
+            print("호출 실패")
+        }
+    }
+    
+    return user
     
 }
