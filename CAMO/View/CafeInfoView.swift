@@ -45,7 +45,7 @@ struct CafeInfoView: View {
                         Image(systemName: "map")
                             .environment(\.symbolVariants, .none)
                             .font(.system(size: 16))
-                            .foregroundColor(Color("mainColor"))
+                            .foregroundColor(Color("mainPointColor"))
                     }
                     .padding(.bottom, 20)
                     Label {
@@ -56,7 +56,7 @@ struct CafeInfoView: View {
                         Image(systemName: "phone")
                             .environment(\.symbolVariants, .none)
                             .font(.system(size: 16))
-                            .foregroundColor(Color("mainColor"))
+                            .foregroundColor(Color("mainPointColor"))
                     }
                     .padding(.bottom, 20)
                     HStack {
@@ -68,7 +68,7 @@ struct CafeInfoView: View {
                             Image(systemName: "heart.circle")
                                 .environment(\.symbolVariants, .none)
                                 .font(.system(size: 16))
-                                .foregroundColor(Color("mainColor"))
+                                .foregroundColor(Color("mainPointColor"))
                         }
                         .padding(.trailing, 20)
                         
@@ -77,7 +77,7 @@ struct CafeInfoView: View {
                             Text("5000원 이하 음료 가능")
                                 .font(.system(size: 12))
                                 .lineLimit(1)
-                                .foregroundColor(.gray)
+                                .foregroundColor(Color("grayTextColor"))
                         } icon : {
                             Image(systemName: "gift")
                                 .environment(\.symbolVariants, .none)
@@ -98,7 +98,7 @@ struct CafeInfoView: View {
                         Image(systemName: "quote.bubble")
                             .environment(\.symbolVariants, .none)
                             .font(.system(size: 16))
-                            .foregroundColor(Color("mainColor"))
+                            .foregroundColor(Color("mainPointColor"))
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -106,7 +106,7 @@ struct CafeInfoView: View {
 
             } // vstack
             .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .white))
+            .background(Color("bgColor"))
             .border(Color.black.opacity(0), width: 0)
             .cornerRadius(20)
             .padding(30)
@@ -122,7 +122,7 @@ struct CafeInfoView: View {
                         Text("대표 메뉴")
                             .font(.system(size: 18))
                             .fontWeight(.bold)
-                            .foregroundColor(Color("mainColor"))
+                            .foregroundColor(Color("mainPointColor"))
                         HStack {
                             Spacer()
                             Text("더보기")
@@ -150,10 +150,9 @@ struct CafeInfoView: View {
                                 .lineLimit(1)
                                 .padding(.top, 10)
                                 .padding(.bottom, 1).ignoresSafeArea()
-                                .foregroundColor(.black)
                             Text("2500원")
                                 .font(.system(size: 12))
-                                .foregroundColor(.gray)
+                                .foregroundColor(Color("grayTextColor"))
                         }
                         .padding(.trailing, 5)
                         VStack {
@@ -169,10 +168,9 @@ struct CafeInfoView: View {
                                 .lineLimit(1)
                                 .padding(.top, 10)
                                 .padding(.bottom, 1).ignoresSafeArea()
-                                .foregroundColor(.black)
                             Text("2500원")
                                 .font(.system(size: 12))
-                                .foregroundColor(.gray)
+                                .foregroundColor(Color("grayTextColor"))
                         }
                         .padding(.leading, 5)
                     } // hstack
@@ -185,7 +183,7 @@ struct CafeInfoView: View {
                 
             } // navigationLink
             .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .white))
+            .background(Color("bgColor"))
             .border(Color.black.opacity(0), width: 0)
             .cornerRadius(20)
             .shadow(color: .gray.opacity(0.4), radius: 5, x: 0, y: 0)
@@ -255,6 +253,7 @@ struct CafeInfoView: View {
         } // scrollView
         .navigationTitle("\(cafeName)")
         .navigationBarTitleDisplayMode(.inline)
+        .background(Color("bgMainColor"))
     }
 }
 
@@ -315,7 +314,7 @@ struct WriteReView: View {
             VStack {
                 Text("별점")
                     .font(.system(size: 18))
-                    .foregroundColor(Color("mainColor"))
+                    .foregroundColor(Color("mainPointColor"))
                     .fontWeight(.bold)
                     .padding(20)
                 
@@ -336,12 +335,11 @@ struct WriteReView: View {
                 // 별점 숫자
                 Text("\(ratingValue) / 5")
                     .font(.system(size: 14))
-                    .foregroundColor(.black)
                     .padding(20)
                 
             }  // vstack
             .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .white))
+            .background(Color("bgColor"))
             .border(Color.black.opacity(0), width: 0)
             .cornerRadius(20)
             .shadow(color: .gray.opacity(0.4), radius: 5, x: 0, y: 0)
@@ -352,7 +350,7 @@ struct WriteReView: View {
             VStack {
                 Text("리뷰 작성")
                     .font(.system(size: 18))
-                    .foregroundColor(Color("mainColor"))
+                    .foregroundColor(Color("mainPointColor"))
                     .fontWeight(.bold)
                     .padding(.top, 20)
                     .padding(.bottom, 10)
@@ -363,15 +361,16 @@ struct WriteReView: View {
                     // 텍스트 작성
                     TextEditor(text: $inputReview)
                         .font(.system(size: 18))
-                        .foregroundColor(.black)
                         .lineSpacing(5)
                         .padding(.horizontal, 20)
                         .padding(.bottom, 20)
                         .padding(.top, 10).ignoresSafeArea()
+                        .scrollContentBackground(.hidden)
+                        .background(Color("bgColor"))
                     if inputReview.isEmpty {
                         Text(placeHolder)
                             .font(.system(size: 18))
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color("grayTextColor"))
                             .lineSpacing(5)
                             .padding(.top, 18).ignoresSafeArea()
                             .padding(.horizontal, 24)
@@ -389,7 +388,7 @@ struct WriteReView: View {
                 
                 
             }
-            .background(Color(uiColor: .white))
+            .background(Color("bgColor"))
             .border(Color.black.opacity(0), width: 0)
             .cornerRadius(20)
             .shadow(color: .gray.opacity(0.4), radius: 5, x: 0, y: 0)
@@ -412,6 +411,7 @@ struct WriteReView: View {
         }, label: {
             Text("확인")
         }))
+        .background(Color("bgMainColor"))
     } // body
     
     func image(for number: Int) -> Image {

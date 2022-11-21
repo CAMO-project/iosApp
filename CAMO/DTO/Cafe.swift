@@ -42,3 +42,18 @@ struct Cafe : Codable {
     }
     
 }
+
+struct EditCafeDTO : Codable {
+    
+    var cafeName, cafeAddress, cafePhone, cafeIntroduce, cafeReward : String
+    var stampsNumber: Int
+    
+    init(cafeName: String, cafeAddress: String, cafePhone: String, cafeIntroduce: String, cafeReward: String, stampsNumber: Int) {
+        self.cafeName = cafeName
+        self.cafeAddress = cafeAddress
+        self.cafePhone = cafePhone
+        self.cafeIntroduce = cafeIntroduce
+        self.cafeReward = cafeReward
+        self.stampsNumber = stampsNumber
+    }
+}

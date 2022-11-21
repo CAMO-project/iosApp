@@ -13,13 +13,6 @@ struct EditCafeView: View {
     }
 }
 
-//struct CreateCafeView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CreateCafeView()
-//    }
-//}
-
-
 struct CreateCafeView: View {
     
     @State var inputCafeName: String = ""
@@ -36,22 +29,22 @@ struct CreateCafeView: View {
         
         ScrollView {
             VStack(alignment: .leading) {
-                Text("카페명").font(.system(size:16)).foregroundColor(Color("mainColor"))
+                Text("카페명").font(.system(size:16)).foregroundColor(Color("mainPointColor"))
                     .fontWeight(.bold)
                 UnderlineTextFieldView(text: $inputCafeName, textField: nameView, placeholder: "카페 상호명을 입력하세요")
                     .padding(.bottom, 32)
                 
-                Text("주소").font(.system(size:16)).foregroundColor(Color("mainColor"))
+                Text("주소").font(.system(size:16)).foregroundColor(Color("mainPointColor"))
                     .fontWeight(.bold)
                 UnderlineTextFieldView(text: $inputCafeAddress, textField: addressView, placeholder: "카페 주소를 입력하세요")
                     .padding(.bottom, 32)
                 
-                Text("전화번호").font(.system(size:16)).foregroundColor(Color("mainColor"))
+                Text("전화번호").font(.system(size:16)).foregroundColor(Color("mainPointColor"))
                     .fontWeight(.bold)
                 UnderlineTextFieldView(text: $inputCafePhone, textField: phoneView, placeholder: "카페 전화번호를 입력하세요")
                     .padding(.bottom, 32)
                 
-                Text("사업자 등록 번호").font(.system(size:16)).foregroundColor(Color("mainColor"))
+                Text("사업자 등록 번호").font(.system(size:16)).foregroundColor(Color("mainPointColor"))
                     .fontWeight(.bold)
                 UnderlineTextFieldView(text: $inputBusinessNum, textField: businessNumView, placeholder: "사업자 번호를 입력하세요")
                     .padding(.bottom, 32)
@@ -61,7 +54,6 @@ struct CreateCafeView: View {
                         .foregroundColor(Color("redPointColor"))
                 }
             }
-            
             
         } // scrollview
         .padding(.top, 30)
@@ -125,12 +117,14 @@ struct EditCafeInfoView: View {
     @State var inputCafeAddress: String = cafe.cafeAddress
     @State var inputCafePhone: String = cafe.cafePhone
     @State var inputCouponTotal: Int = cafe.stampsNumber
-    @State var inputCouponGift: String = cafe.cafeReward
+    @State var inputCouponReward: String = cafe.cafeReward
     @State var inputCafeIntroduce: String = cafe.cafeIntroduce
     
     
     @State private var textMsg = true
     @State private var textWrongPW = true
+    
+    @State var placeHolder : String = "카페 소개글 작성하기"
     
     @Binding var isPresented: Bool
     
@@ -222,7 +216,7 @@ struct EditCafeInfoView: View {
                             .font(.system(size: 18))
                             .foregroundColor(Color("mainPointColor"))
                     }
-                    UnderlineTextFieldView(text: $inputCouponGift, textField: couponGiftView, placeholder: "쿠폰 보상을 입력하세요")
+                    UnderlineTextFieldView(text: $inputCouponReward, textField: couponGiftView, placeholder: "쿠폰 보상을 입력하세요")
                         .padding(.bottom, 32)
                     
                     Label {
@@ -255,6 +249,14 @@ struct EditCafeInfoView: View {
                     // 여기
                     .scrollContentBackground(.hidden)
                     .background(Color("bgColor"))
+                if inputCafeIntroduce.isEmpty {
+                    Text(placeHolder)
+                        .font(.system(size: 18))
+                        .foregroundColor(Color("grayTextColor"))
+                        .lineSpacing(5)
+                        .padding(.top, 18).ignoresSafeArea()
+                        .padding(.horizontal, 24)
+                }
             }
             .background(Color("bgColor"))
             .border(Color.black.opacity(0), width: 0)
@@ -282,10 +284,11 @@ struct EditCafeInfoView: View {
             Text("취소")
         }), trailing: Button(action: {
             if (inputCafeName == "" || inputCafeAddress == "" || inputCafePhone == ""
-                       || inputCouponGift == "") {
+                       || inputCouponReward == "" || inputCafeIntroduce == "") {
                 // 하나라도 빈칸이 있는 경우
                 textMsg = false
             } else {
+                cafeUpdate(editCafeDTO: EditCafeDTO(cafeName: inputCafeName, cafeAddress: inputCafeAddress, cafePhone: inputCafeAddress, cafeIntroduce: inputCafeIntroduce, cafeReward: inputCouponReward, stampsNumber: inputCouponTotal))
                 self.isPresented = false
             }
         }, label: {
@@ -319,7 +322,7 @@ extension EditCafeInfoView {
     }
     
     private var couponGiftView: some View {
-        TextField("", text: $inputCouponGift)
+        TextField("", text: $inputCouponReward)
            .font(.system(size:16))
            .disableAutocorrection(true)
            .textInputAutocapitalization(.never)

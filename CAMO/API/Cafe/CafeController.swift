@@ -66,8 +66,8 @@ func cafeRegister(cafe: Cafe) {
     
 }
 
-
-func cafeUpdate(cafeUp : Cafe) {
+// 카페 수정
+func cafeUpdate(editCafeDTO : EditCafeDTO) {
     let url = host + "/cafe/update/" + String(user.userId)
     
     // URLRequest 객체 생성 (url 전달)
@@ -84,7 +84,7 @@ func cafeUpdate(cafeUp : Cafe) {
     
     do {
         // json 객체로 변환
-        let encodedData = try encoder.encode(cafeUp)
+        let encodedData = try encoder.encode(editCafeDTO)
         // Request Body에 json 추가
         request.httpBody = encodedData
         
@@ -98,7 +98,7 @@ func cafeUpdate(cafeUp : Cafe) {
             print("호출 성공")
             
             cafe = response.value ?? cafe
-            print(user)
+            print(cafe)
             
         case .failure(_):
             print(response.result)
@@ -132,5 +132,34 @@ func getCafe() {
         }
     }
     
+    
+}
+
+func getCafeWithReturn() -> Cafe {
+    
+    let url = host + "/cafe/get/" + String(user.userId)
+    
+    // URLRequest 객체 생성 (url 전달)
+    var request = URLRequest(url: URL(string: url)!)
+    // 메소드 지정
+    request.httpMethod = "GET"
+    // 헤더 정보 설정
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    AF.request(request).responseDecodable(of:Cafe.self) { response in
+        switch response.result {
+        case .success:
+            print("호출 성공")
+            
+            cafe = response.value ?? cafe
+            print(cafe)
+            
+        case .failure(_):
+            print(response.result)
+            print("호출 실패")
+        }
+    }
+    
+    return cafe
     
 }

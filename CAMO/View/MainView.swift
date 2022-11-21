@@ -95,17 +95,16 @@ struct CafeListView: View {
                     .padding(.leading, 20)
                     .padding(.vertical, 10)
                     .font(.system(size:16))
-                    .foregroundColor(.black)
                     .textInputAutocapitalization(.never)
                 Image(systemName: "magnifyingglass")
                     .environment(\.symbolVariants, .none)
                     .imageScale(.medium)
-                    .foregroundColor(Color("mainColor"))
+                    .foregroundColor(Color("mainPointColor"))
                     .padding(.trailing, 20)
                     .padding(.vertical, 10)
             } // hstack
             .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .white))
+            .background(Color("bgColor"))
             .border(Color.black.opacity(0), width: 0)
             .cornerRadius(10)
             .padding(30)
@@ -133,11 +132,13 @@ struct CafeListView: View {
             .padding(.horizontal, 30)
             .padding(.top, 0).ignoresSafeArea()
             .padding(.bottom, 1)
+            .background(Color("bgMainColor"))
             
             
         } // vstack
         .navigationBarTitleDisplayMode(.inline)
 //        .navigationTitle(Text("카페 리스트").font(.system(size: 28)))
+        .background(Color("bgMainColor"))
         
     }
 }
@@ -179,27 +180,20 @@ struct CouponView: View {
                     CouponRow(businessNum: "1111", cafeName: "프린세스", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", couponTotal: 10, couponMy: 10)
                 }
                 .padding(.top, 30)
+                .background(Color("bgMainColor"))
                 
             } // scrollView
+            .background(Color("bgMainColor"))
         } // vstack
 //        .navigationTitle(Text("쿠폰").font(.system(size: 28)))
+        .background(Color("bgMainColor"))
         
     }
     
 }
 
-// MARK: ----refresh user info
-//class UserViewModel: ObservableObject {
-//    func refreshUser() -> User {
-//        getUser()
-//        return user
-//    }
-//}
-
 // MARK: ----ProfileView
 struct ProfileView: View {
-    
-//    @ObservedObject var userViewModel = UserViewModel()
     
     @State var editUserInfo: Bool = false
     @State private var popQrAlert: Bool  = false
@@ -210,13 +204,7 @@ struct ProfileView: View {
     @State var editCafeMenu = false
     
     @State var userInfo: User = getUserWithReturn()
-    
-//    init(userViewModel: UserViewModel = UserViewModel()) {
-//        self.userViewModel = userViewModel
-//        self.editUserInfo = false
-//        self.popQrAlert = false
-//        self.qrScanSettings = false
-//    }
+    @State var cafeInfo: Cafe = getCafeWithReturn()
     
     var body: some View {
         VStack {
@@ -402,7 +390,7 @@ struct ProfileView: View {
                         
                     } else if (userInfo.role == 1) {
                         VStack {
-                            Text("카페 \(cafe.cafeName)")
+                            Text("카페 \(cafeInfo.cafeName)")
                                 .font(.system(size: 18))
                                 .foregroundColor(Color("mainPointColor"))
                                 .padding(.bottom, 10)
@@ -546,18 +534,18 @@ struct ProfileView: View {
         .refreshable {
 //            self.userViewModel.refreshUser()
             userInfo = getUserWithReturn()
+            cafeInfo = getCafeWithReturn()
             print("새로고침 : \(user)")
         }
         .onAppear() {
 //            self.userViewModel.refreshUser()
             userInfo = getUserWithReturn()
+            cafeInfo = getCafeWithReturn()
             print("appear :) \(userInfo)")
         }
         .onDisappear() {
             print("disappear :)")
         }
-        
-        
         
     }
     
@@ -598,11 +586,12 @@ struct CafeListRow: View {
                 } // hstack
                 .padding(.bottom, 10)
                 Text("\(cafeAddress)").font(.system(size: 12))
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color("grayTextColor"))
             } // vstack
             .padding(.vertical, 20)
-            
         }
+        .background(Color("bgMainColor"))
+        .listRowBackground(Color("bgMainColor"))
         
     }
 }
@@ -629,10 +618,9 @@ struct CouponRow: View {
                 HStack {
                     VStack (alignment: .leading) {
                         Text("\(cafeName)").font(.system(size: 16))
-                            .foregroundColor(.black)
                             .padding(.bottom, 10)
                         Text("\(cafeAddress)").font(.system(size: 12))
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color("grayTextColor"))
                             .lineLimit(1)
                             .padding(.bottom, 10)
                         Label {
@@ -640,7 +628,7 @@ struct CouponRow: View {
                             Text("아이스 아메리카노")
                                 .font(.system(size: 12))
                                 .lineLimit(1)
-                                .foregroundColor(.gray)
+                                .foregroundColor(Color("grayTextColor"))
                         } icon : {
                             Image(systemName: "gift")
                                 .environment(\.symbolVariants, .none)
@@ -655,7 +643,6 @@ struct CouponRow: View {
                     VStack {
                         Text("\(couponMy) / \(couponTotal)")
                             .font(.system(size: 14))
-                            .foregroundColor(.black)
                     }
                     .frame(maxWidth: 50, maxHeight: .infinity ,alignment: .trailing)
                     .padding(.trailing, 20)
@@ -665,7 +652,7 @@ struct CouponRow: View {
                     
             } // navigationLink
             .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .white))
+            .background(Color("bgColor"))
             .border(Color.black.opacity(0), width: 0)
             .cornerRadius(20)
             .shadow(color: .gray.opacity(0.4), radius: 5, x: 0, y: 0)
@@ -699,7 +686,7 @@ struct CouponRow: View {
                 
         } // zstack
         .frame(maxWidth: .infinity)
-        .background(Color(uiColor: .white))
+        .background(Color("bgColor"))
         .border(Color.black.opacity(0), width: 0)
         .cornerRadius(20)
         .padding(.horizontal, 30)
@@ -710,149 +697,6 @@ struct CouponRow: View {
             
     } // body
 }
-
-//struct EditCafeRow: View {
-//
-//    @State var createCafe = false
-//    @State var editCafeInfo = false
-//    @State var editCafeMenu = false
-//
-//    @State var userInfo: User = getUserWithReturn()
-//
-//    var body: some View {
-//        VStack {
-//            if (userInfo.role == 0) {
-//                VStack {
-//                    Text("카페 사장님이신가요?")
-//                        .font(.system(size: 14))
-//                        .foregroundColor(.gray)
-//                        .padding(.bottom, 10)
-//
-//                    Button {
-//                        createCafe = true
-//                    } label: {
-//                        Text("카페 등록하러 가기")
-//                            .font(.system(size: 16))
-//                            .foregroundColor(.white)
-//                            .frame(maxWidth: .infinity)
-//                    }
-//                    .padding(.vertical, 20)
-//                    .background(Color("mainColor"))
-//                    .cornerRadius(16)
-//                    .fullScreenCover(isPresented: $createCafe) {
-//                        NavigationView {
-//                            CreateCafeView(isPresented: $createCafe)
-//                            //                        .navigationBarHidden(false)
-//                                .navigationBarBackButtonHidden(false)
-//                        }
-//
-//                    }
-//
-//
-//                }
-//                .padding(.horizontal, 30)
-//
-//            } else if (userInfo.role == 1) {
-//                VStack {
-//                    Text("카페 \(cafe.cafeName)")
-//                        .font(.system(size: 18))
-//                        .foregroundColor(Color("mainPointColor"))
-//                        .padding(.bottom, 10)
-//                        .padding(.top, 20)
-//
-//                    HStack {
-//
-//                        // 카페 정보 수정 버튼
-//                        Button {
-//                            editCafeInfo = true
-//                        } label: {
-//                            VStack {
-//                                Image(systemName: "book")
-//                                    .environment(\.symbolVariants, .none)
-//                                    .font(.system(size: 24))
-//                                    .foregroundColor(Color("mainPointColor"))
-//                                    .padding(.bottom, 10)
-//
-//                                Text("카페 정보")
-//                                    .font(.system(size: 16))
-//                                    .foregroundColor(Color("mainPointColor"))
-//                            }
-//                            .frame(maxWidth: .infinity)
-//                            .padding(.vertical, 20)
-//                            .background(Color("bgColor"))
-//                            .overlay(
-//                                RoundedRectangle(cornerRadius: 16)
-//                                    .stroke(Color("mainPointColor"), lineWidth: 2)
-//
-//                            )
-//
-//                        }
-//                        .padding(.trailing, 10)
-//                        .fullScreenCover(isPresented: $editCafeInfo) {
-//                            NavigationView {
-//                                EditCafeInfoView(isPresented: $editCafeInfo)
-//                                    .navigationBarBackButtonHidden(false)
-//                            }
-//                        }
-//
-//
-//                        // 카페 메뉴 수정 버튼
-//                        Button {
-//                            editCafeMenu = true
-//                        } label: {
-//                            VStack {
-//                                Image(systemName: "drop")
-//                                    .environment(\.symbolVariants, .none)
-//                                    .font(.system(size: 24))
-//                                    .foregroundColor(Color("mainPointColor"))
-//                                    .padding(.bottom, 10)
-//
-//                                Text("카페 메뉴")
-//                                    .font(.system(size: 16))
-//                                    .foregroundColor(Color("mainPointColor"))
-//                            }
-//                            .frame(maxWidth: .infinity)
-//                            .padding(.vertical, 20)
-//                            .background(Color("bgColor"))
-//                            .overlay(
-//                                RoundedRectangle(cornerRadius: 16)
-//                                    .stroke(Color("mainPointColor"), lineWidth: 2)
-//
-//                            )
-//
-//                        }
-//                        .padding(.leading, 10)
-//
-//
-//
-//                    }
-//                    .padding(.horizontal, 20)
-//                    .padding(.bottom, 20)
-//
-//
-//                }
-//                .frame(maxWidth: .infinity)
-//                .background(Color("bgColor"))
-//                .border(Color.black.opacity(0), width: 0)
-//                .cornerRadius(20)
-//                .padding(.horizontal, 30)
-//                .padding(.bottom, 20)
-//                .shadow(color: .gray.opacity(0.4), radius: 5, x: 0, y: 0)
-//            }
-//        }
-//        .refreshable {
-//            self.userViewModel.refreshUser()
-//            userInfo = getUserWithReturn()
-//            print("새로고침 : \(user)")
-//        }
-//        .onAppear() {
-//            self.userViewModel.refreshUser()
-//            userInfo = getUserWithReturn()
-//            print("appear :) \(userInfo)")
-//        }
-        
-//    }
-//}
 
 
 struct EditUserInfoView: View {
@@ -872,21 +716,21 @@ struct EditUserInfoView: View {
             
             VStack(alignment: .leading) {
                 
-                Text("이름").font(.system(size:16)).foregroundColor(Color("mainColor"))
+                Text("이름").font(.system(size:16)).foregroundColor(Color("mainPointColor"))
                     .fontWeight(.bold)
                 UnderlineTextFieldView(text: $inputUserName, textField: nameView, placeholder: "이름을 입력하세요")
                     .padding(.bottom, 32)
                 
-                Text("전화번호").font(.system(size:16)).foregroundColor(Color("mainColor"))
+                Text("전화번호").font(.system(size:16)).foregroundColor(Color("mainPointColor"))
                     .fontWeight(.bold)
                 UnderlineTextFieldView(text: $inputUserPhone, textField: phoneView, placeholder: "전화번호를 입력하세요 ('-' 제외)").padding(.bottom, 32)
                 
-                Text("비밀번호").font(.system(size:16)).foregroundColor(Color("mainColor"))
+                Text("비밀번호").font(.system(size:16)).foregroundColor(Color("mainPointColor"))
                     .fontWeight(.bold)
                 UnderlineTextFieldView(text: $inputPW, textField: passwordView, placeholder: "비밀번호를 입력하세요")
                     .padding(.bottom, 32)
                 
-                Text("비밀번호 확인").font(.system(size:16)).foregroundColor(Color("mainColor"))
+                Text("비밀번호 확인").font(.system(size:16)).foregroundColor(Color("mainPointColor"))
                     .fontWeight(.bold)
                 UnderlineTextFieldView(text: $inputPWChk, textField: passwordChkView, placeholder: "비밀번호를 다시 입력하세요")
                     .padding(.bottom, 32)
