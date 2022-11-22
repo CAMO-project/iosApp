@@ -780,6 +780,7 @@ struct EditUserInfoView: View {
         .onDisappear() {
             print("disappear editUserInfo ◡̎")
         }
+        .background(Color("bgMainColor"))
         
     } // body
 }

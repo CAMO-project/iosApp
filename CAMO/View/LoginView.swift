@@ -92,6 +92,9 @@ struct LoginView: View {
             
         }
         .padding(30)
+        .onDisappear() {
+            isPresented = false
+        }
 
         
     }

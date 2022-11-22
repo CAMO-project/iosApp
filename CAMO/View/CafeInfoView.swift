@@ -308,6 +308,8 @@ struct WriteReView: View {
     @State var inputReview : String = ""
     @State var placeHolder : String = "리뷰 작성하기"
     
+    @State var overflowTextAlert : Bool = false
+    
     var body: some View {
         ScrollView {
             
@@ -334,7 +336,7 @@ struct WriteReView: View {
 
                 // 별점 숫자
                 Text("\(ratingValue) / 5")
-                    .font(.system(size: 14))
+                    .font(.system(size: 16))
                     .padding(20)
                 
             }  // vstack
@@ -381,9 +383,11 @@ struct WriteReView: View {
                 .frame(maxWidth: .infinity, minHeight: 300)
                 
                 
-                Text("\(inputReview.count) / 100")
+                Text("\(inputReview.count) / 500")
+                    .font(.system(size: 16))
                     .padding(.bottom, 20)
-                
+                    .foregroundColor(inputReview.count <= 500 ? Color("textColor") : Color("redPointColor"))
+                    
 
                 
                 
@@ -394,7 +398,11 @@ struct WriteReView: View {
             .shadow(color: .gray.opacity(0.4), radius: 5, x: 0, y: 0)
             .padding(.horizontal, 30)
             .padding(.top, 0).ignoresSafeArea()
-            
+            .alert(isPresented: $overflowTextAlert) {
+                Alert(title: Text("글자수 제한"),
+                      message: Text("리뷰는 500자 이내로 작성해주세요"),
+                      dismissButton: .default(Text("확인")))
+            }
 
                 
             
@@ -407,7 +415,11 @@ struct WriteReView: View {
         }, label: {
             Text("취소")
         }), trailing: Button(action: {
+            if (inputReview.count > 500) {
+                    overflowTextAlert = true
+            } else {
                 self.isPresented = false
+            }
         }, label: {
             Text("확인")
         }))

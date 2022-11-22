@@ -76,7 +76,7 @@ struct JoinView: View {
                     join(userJoin: User(email: inputEmail, name: inputName, password: inputPW, phone: inputPhone))
 //                    popAlert = true
                     isPresented = false
-                    isJoined.toggle()
+                    isJoined = true
                 } else if (inputPW == "" || inputPWChk == "" || inputName == ""
                            || inputEmail == "" || inputPhone == "") {
                     // 하나라도 빈칸이 있는 경우
@@ -110,6 +110,9 @@ struct JoinView: View {
             
         }
         .padding(30)
+        .onDisappear() {
+            isPresented = false
+        }
     }
 }
 

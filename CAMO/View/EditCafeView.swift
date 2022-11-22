@@ -75,6 +75,7 @@ struct CreateCafeView: View {
         }, label: {
             Text("확인")
         }))
+        .background(Color("bgMainColor"))
     } // body
 }
 
