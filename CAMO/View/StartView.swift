@@ -39,12 +39,10 @@ struct StartView: View {
     @State private var isLogined = false
     @State private var isJoined = false
     
-    
     var body: some View {
         
         NavigationView {
             VStack {
-                
                 Image("camoTitle")
                     .resizable()
                     .aspectRatio(1.0, contentMode: .fit)

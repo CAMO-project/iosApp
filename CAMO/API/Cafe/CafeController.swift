@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
 
 
 //"cafeId": "1000000001",
@@ -109,7 +110,7 @@ func cafeUpdate(editCafeDTO : EditCafeDTO) {
 
 
 func getCafe() {
-    let url = host + "/cafe/get/" + String(user.userId)
+    let url = host + "/cafe/" + String(user.userId)
     
     // URLRequest 객체 생성 (url 전달)
     var request = URLRequest(url: URL(string: url)!)
@@ -131,8 +132,6 @@ func getCafe() {
             print("호출 실패")
         }
     }
-    
-    
 }
 
 func getCafeWithReturn() -> Cafe {
@@ -161,5 +160,55 @@ func getCafeWithReturn() -> Cafe {
     }
     
     return cafe
+    
+}
+
+func getCafeList() -> Array<CafeListDTO> {
+//    var cafeList : [CafeListDTO]
+//    var cafeList : Array<CafeListDTO> = []
+
+    var cafeList = Array<CafeListDTO>()
+    
+    
+    let url = host + "/cafe/list"
+    
+    // URLRequest 객체 생성 (url 전달)
+    var request = URLRequest(url: URL(string: url)!)
+    // 메소드 지정
+    request.httpMethod = "GET"
+    // 헤더 정보 설정
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    AF.request(request).response() { response in
+        switch response.result {
+        case .success:
+            print("호출 성공")
+            let jsonArray = JSON(response.value)
+//            print("json : \(jsonArray)")
+//            var i : Int = 0
+            for (index, json) : (String, JSON) in jsonArray {
+                guard let cafeId = json["cafeId"].string,
+                      let cafeName = json["cafeName"].string,
+                      let cafeAddress = json["cafeAddress"].string,
+                      let avgRating = json["avgRating"].float
+                        
+                else {
+                    continue
+                }
+//                print("\(index) - id: \(cafeId), name: \(cafeName)")
+                cafeList.append(CafeListDTO(cafeId:cafeId, cafeName: cafeName, cafeAddress: cafeAddress, avgRating: avgRating))
+            }
+            
+//            print(cafeList.count)
+//            print(cafeList[0])
+            
+        case .failure(_):
+            print(response.result)
+            print("호출 실패")
+        }
+    }
+//    print(cafeList[0])
+    print("반환")
+    return cafeList
     
 }

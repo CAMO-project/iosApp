@@ -57,3 +57,4 @@ struct EditCafeDTO : Codable {
         self.stampsNumber = stampsNumber
     }
 }
+

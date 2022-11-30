@@ -16,28 +16,28 @@ func login(loginDTO: LoginDTO) -> Bool {
     
     var isLogin = true
     
-    let url = host + "/user/login"
+    let url = host + "/user/" + loginDTO.email + "?password=" + loginDTO.password
     
     // URLRequest 객체 생성 (url 전달)
     var request = URLRequest(url: URL(string: url)!)
     // 메소드 지정
-    request.httpMethod = "POST"
+    request.httpMethod = "GET"
     // 헤더 정보 설정
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    // json 인코더 생성
-    let encoder = JSONEncoder()
-    
-    // json 출력 시 예쁘게 출력
-    encoder.outputFormatting = .prettyPrinted
-    
-    do {
-        // json 객체로 변환
-        let encodedData = try encoder.encode(loginDTO)
-        // Request Body에 json 추가
-        request.httpBody = encodedData
-    } catch {
-        print("error11111")
-    }
+//    // json 인코더 생성
+//    let encoder = JSONEncoder()
+//
+//    // json 출력 시 예쁘게 출력
+//    encoder.outputFormatting = .prettyPrinted
+//
+//    do {
+//        // json 객체로 변환
+//        let encodedData = try encoder.encode(loginDTO)
+//        // Request Body에 json 추가
+//        request.httpBody = encodedData
+//    } catch {
+//        print("error11111")
+//    }
     
     AF.request(request).responseDecodable(of:User.self) { response in
         switch response.result {
@@ -102,7 +102,7 @@ func join(userJoin: User) {
 
 func editUserInfo(editUserDTO: EditUserDTO) {
     
-    let url = host + "/user/id/" + String(user.userId)
+    let url = host + "/user/" + String(user.userId)
     
     // URLRequest 객체 생성 (url 전달)
     var request = URLRequest(url: URL(string: url)!)
@@ -142,7 +142,7 @@ func editUserInfo(editUserDTO: EditUserDTO) {
 }
 
 func getUser() {
-    let url = host + "/user/id/" + String(user.userId)
+    let url = host + "/user/" + String(user.userId)
     
     // URLRequest 객체 생성 (url 전달)
     var request = URLRequest(url: URL(string: url)!)

@@ -12,7 +12,7 @@ import Foundation
 var user: User = User()
 var cafe: Cafe = Cafe()
 
-let host: String = "https://ab87-180-69-79-224.jp.ngrok.io"
+let host: String = "http://180.69.79.224:8888"
 
 @main
 struct CAMOApp: App {

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct MainView: View {
     
@@ -76,6 +77,7 @@ struct MainView_Previews: PreviewProvider {
 struct CafeListView: View {
 
     @State private var inputSearch: String = ""
+//    @State private var cafeList = getCafeList()
     
     var body: some View {
         VStack {
@@ -116,17 +118,34 @@ struct CafeListView: View {
 //                ForEach(1..<100) {
 //                    Text("item \($0)")
 //                }
-                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
-//                        .listRowInsets(EdgeInsets())
-                CafeListRow(businessNum: "2222", cafeName: "포롱", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
-                CafeListRow(businessNum: "3333", cafeName: "프린세스", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
-                CafeListRow(businessNum: "4444", cafeName: "헬로베이비", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
-                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
-                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
-                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
-                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
-                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
-                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
+
+//                Text("메인뷰 : \(cafeList.count)")
+//                Text("메인뷰 : \(cafeList[0].cafeName)")
+                
+                getCafeList()
+                    
+//                ForEach(0..<cafeList.count) {
+//                    CafeListRow(cafeListDTO: cafeList[index])
+//                    print(cafeList[index].cafeName)
+//                    Text("\(cafeList[$0].cafeName)")
+//                }
+                
+//                ForEach (cafeList, id: \.self) { cafeListDTO in
+//                    CafeListRow(cafeListDTO: $cafeListDTO)
+//                }
+                
+                
+//                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
+////                        .listRowInsets(EdgeInsets())
+//                CafeListRow(businessNum: "2222", cafeName: "포롱", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
+//                CafeListRow(businessNum: "3333", cafeName: "프린세스", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
+//                CafeListRow(businessNum: "4444", cafeName: "헬로베이비", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
+//                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
+//                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
+//                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
+//                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
+//                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
+//                CafeListRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", ratingNum: 4.3)
             }
             .listStyle(.plain)
             .padding(.horizontal, 30)
@@ -139,6 +158,9 @@ struct CafeListView: View {
         .navigationBarTitleDisplayMode(.inline)
 //        .navigationTitle(Text("카페 리스트").font(.system(size: 28)))
         .background(Color("bgMainColor"))
+        .onAppear() {
+            getCafeList()
+        }
         
     }
 }
@@ -542,6 +564,7 @@ struct ProfileView: View {
             userInfo = getUserWithReturn()
             cafeInfo = getCafeWithReturn()
             print("appear :) \(userInfo)")
+            print("cafeInfo : \(cafeInfo)")
         }
         .onDisappear() {
             print("disappear :)")
@@ -554,17 +577,18 @@ struct ProfileView: View {
 
 struct CafeListRow: View {
     
-    @State var businessNum : String
+    @State var cafeId : String
     @State var cafeName : String
     @State var cafeAddress : String
-    @State var ratingNum : Float
+    @State var avgRating : Float
+    
+//    @State var cafeListDTO : CafeListDTO
     
     @State private var isActive: Bool = false
     
     var body: some View {
         ZStack {
-            
-            NavigationLink(destination: CafeInfoView(businessNum: $businessNum, cafeName : $cafeName, cafeAddress : $cafeAddress), isActive: $isActive) {
+            NavigationLink(destination: CafeInfoView(businessNum: $cafeId, cafeName : $cafeName, cafeAddress : $cafeAddress), isActive: $isActive) {
                 EmptyView()
             } //navigationlink
             .opacity(0.0)
@@ -580,7 +604,7 @@ struct CafeListRow: View {
                             .environment(\.symbolVariants, .none)
                             .font(.system(size: 14))
                             .foregroundColor(.yellow)
-                        Text("\(ratingNum, specifier: "%.1f")")
+                        Text("\(avgRating)")
                             .font(.system(size: 14))
                     } // hstack
                 } // hstack
@@ -592,7 +616,9 @@ struct CafeListRow: View {
         }
         .background(Color("bgMainColor"))
         .listRowBackground(Color("bgMainColor"))
-        
+        .onAppear() {
+            print(cafeName)
+        }
     }
 }
 
