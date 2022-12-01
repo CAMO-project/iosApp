@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
-
+import Combine
 
 //"cafeId": "1000000001",
 //"userId": 1,
@@ -51,17 +51,17 @@ func cafeRegister(cafe: Cafe) {
         print("error11111")
     }
     
-    AF.request(request).responseDecodable(of:User.self) { response in
+    AF.request(request).responseDecodable(of: User.self) { response in
         switch response.result {
         case .success:
-            print("호출 성공")
+            print("호출 성공 cafeRegister")
             
             user = response.value ?? user
             print(user)
             
         case .failure(_):
             print(response.result)
-            print("호출 실패")
+            print("호출 실패 cafeRegister")
         }
     }
     
@@ -96,14 +96,14 @@ func cafeUpdate(editCafeDTO : EditCafeDTO) {
     AF.request(request).responseDecodable(of:Cafe.self) { response in
         switch response.result {
         case .success:
-            print("호출 성공")
+            print("호출 성공 cafeUpdate")
             
             cafe = response.value ?? cafe
             print(cafe)
             
         case .failure(_):
             print(response.result)
-            print("호출 실패")
+            print("호출 실패 cafeUpdate")
         }
     }
 }
@@ -122,19 +122,19 @@ func getCafe() {
     AF.request(request).responseDecodable(of:Cafe.self) { response in
         switch response.result {
         case .success:
-            print("호출 성공")
+            print("호출 성공 getCafe")
             
             cafe = response.value ?? cafe
             print(cafe)
             
         case .failure(_):
             print(response.result)
-            print("호출 실패")
+            print("호출 실패 getCafe")
         }
     }
 }
 
-func getCafeWithReturn() -> Cafe {
+func getCafe() -> Cafe {
     
     let url = host + "/cafe/get/" + String(user.userId)
     
@@ -148,67 +148,87 @@ func getCafeWithReturn() -> Cafe {
     AF.request(request).responseDecodable(of:Cafe.self) { response in
         switch response.result {
         case .success:
-            print("호출 성공")
+            print("호출 성공 getCafeWithReturn (새로고침)")
             
             cafe = response.value ?? cafe
             print(cafe)
             
         case .failure(_):
             print(response.result)
-            print("호출 실패")
+            print("호출 실패 getCafeWithReturn (새로고침)")
         }
     }
     
     return cafe
+}
+
+//// Escaping
+//// 0. handler 인자 설정
+//func useEscaping(handler: @escaping (Array<CafeListDTO>) -> Void) {
+//    // 1. 요청
+//
+//}
+
+class CafeListSetUpClass: ObservableObject {
+    
+    @Published var cafeList = [CafeListDTO]()
+    
+    func alamofireNetworking() {
+        
+        let url = host + "/cafe/list"
+        
+        // URLRequest 객체 생성 (url 전달)
+        var request = URLRequest(url: URL(string: url)!)
+        // 메소드 지정
+        request.httpMethod = "GET"
+        // 헤더 정보 설정
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        AF.request(request).responseDecodable(of: [CafeListDTO].self) { response in
+            print("alamofire 실행~~")
+
+            switch response.result {
+            case .success(let value):
+                print("호출 성공 alamofireclass")
+                self.cafeList = value
+                
+            case .failure(_):
+                print(response.result)
+                print("호출 실패 alamofireclass")
+            }
+        }
+        
+    }
+    
     
 }
 
-func getCafeList() -> Array<CafeListDTO> {
-//    var cafeList : [CafeListDTO]
-//    var cafeList : Array<CafeListDTO> = []
+class CafeInfoClass: ObservableObject {
+    
+    @Published var cafeInfo = [Cafe]()
+    
+    func alamofireNetworking(cafeId: String) {
+        let url = host + "/cafe/" + cafeId
+        
+        // URLRequest 객체 생성 (url 전달)
+        var request = URLRequest(url: URL(string: url)!)
+        // 메소드 지정
+        request.httpMethod = "GET"
+        // 헤더 정보 설정
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        AF.request(request).responseDecodable(of: [Cafe].self) { response in
+            print("alamofire 실행~~")
 
-    var cafeList = Array<CafeListDTO>()
-    
-    
-    let url = host + "/cafe/list"
-    
-    // URLRequest 객체 생성 (url 전달)
-    var request = URLRequest(url: URL(string: url)!)
-    // 메소드 지정
-    request.httpMethod = "GET"
-    // 헤더 정보 설정
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    
-    AF.request(request).response() { response in
-        switch response.result {
-        case .success:
-            print("호출 성공")
-            let jsonArray = JSON(response.value)
-//            print("json : \(jsonArray)")
-//            var i : Int = 0
-            for (index, json) : (String, JSON) in jsonArray {
-                guard let cafeId = json["cafeId"].string,
-                      let cafeName = json["cafeName"].string,
-                      let cafeAddress = json["cafeAddress"].string,
-                      let avgRating = json["avgRating"].float
-                        
-                else {
-                    continue
-                }
-//                print("\(index) - id: \(cafeId), name: \(cafeName)")
-                cafeList.append(CafeListDTO(cafeId:cafeId, cafeName: cafeName, cafeAddress: cafeAddress, avgRating: avgRating))
+            switch response.result {
+            case .success(let value):
+                print("호출 성공 alamofireclass cafeInfo")
+                self.cafeInfo = value
+                
+            case .failure(_):
+                print(response.result)
+                print("호출 실패 alamofireclass cafeInfo")
             }
-            
-//            print(cafeList.count)
-//            print(cafeList[0])
-            
-        case .failure(_):
-            print(response.result)
-            print("호출 실패")
         }
     }
-//    print(cafeList[0])
-    print("반환")
-    return cafeList
-    
 }

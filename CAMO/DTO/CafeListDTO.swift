@@ -7,18 +7,21 @@
 
 import Foundation
 
-struct CafeListDTO : Codable {
+struct CafeListDTO : Codable, Identifiable {
+    
     
     var cafeId : String
     var cafeName : String
     var cafeAddress : String
     var avgRating : Float
     
+    let id = UUID()
     
-    init(cafeId : String, cafeName : String, cafeAddress : String, avgRating : Float){
-        self.cafeId = cafeId
-        self.cafeName = cafeName
-        self.cafeAddress = cafeAddress
-        self.avgRating = avgRating
-    }
+//    init(cafeId : String, cafeName : String, cafeAddress : String, avgRating : Float){
+//        self.cafeId = cafeId
+//        self.cafeName = cafeName
+//        self.cafeAddress = cafeAddress
+//        self.avgRating = avgRating
+//    }
+    
 }

@@ -9,9 +9,7 @@ import SwiftUI
 
 struct CafeInfoView: View {
     
-    @Binding var businessNum : String
-    @Binding var cafeName : String
-    @Binding var cafeAddress : String
+    @Binding var cafeId : String
     
     @State private var isActiveMenu: Bool = false
     @State private var isActiveWrite: Bool = false
@@ -20,6 +18,12 @@ struct CafeInfoView: View {
 //    @State private var cafeAdress : String
 
     @State var reviewSettings = false
+    
+    @ObservedObject var cafeInfo = CafeInfoClass()
+//
+//    init() {
+//        networking.alamofireNetworking(cafeId: cafeId)
+//    }
     
     var body: some View {
         ScrollView {
@@ -37,7 +41,7 @@ struct CafeInfoView: View {
                 VStack(alignment: .leading) {
                     Label {
                         // 지도
-                        Text("\(cafeAddress)")
+                        Text("\(cafeInfo.cafeAddress)")
                             .font(.system(size: 14))
                             .multilineTextAlignment(.leading)
                             .lineSpacing(5)
@@ -50,7 +54,7 @@ struct CafeInfoView: View {
                     .padding(.bottom, 20)
                     Label {
                         // 전화번호
-                        Text("111-222-3333")
+                        Text("\(cafeInfo.cafePhone)")
                             .font(.system(size: 14))
                     } icon : {
                         Image(systemName: "phone")
@@ -116,7 +120,7 @@ struct CafeInfoView: View {
         
             // 대표 메뉴
             
-            NavigationLink(destination: menuListView(businessNum: $businessNum), isActive: $isActiveMenu) {
+            NavigationLink(destination: menuListView(cafeId: $cafeId), isActive: $isActiveMenu) {
                 VStack {  // menu box
                     ZStack {
                         Text("대표 메뉴")
@@ -235,7 +239,7 @@ struct CafeInfoView: View {
                 .cornerRadius(16)
                 .fullScreenCover(isPresented: $reviewSettings) {
                     NavigationView {
-                        WriteReView(isPresented: $reviewSettings, cafeName: $cafeName)
+                        WriteReView(isPresented: $reviewSettings, cafeId: $cafeId)
     //                        .navigationBarHidden(false)
                             .navigationBarBackButtonHidden(false)
                     }
@@ -251,9 +255,12 @@ struct CafeInfoView: View {
             .padding(30)
           
         } // scrollView
-        .navigationTitle("\(cafeName)")
+        .navigationTitle("\(cafeInfo.cafeName)")
         .navigationBarTitleDisplayMode(.inline)
         .background(Color("bgMainColor"))
+        .onAppear() {
+            cafeInfo.alamofireNetworking(cafeId: cafeId)
+        }
     }
 }
 
@@ -267,11 +274,11 @@ struct CafeInfoView: View {
 // CafeInfoView -> 메뉴 더보기 뷰
 struct menuListView: View {
     
-    @Binding var businessNum : String
+    @Binding var cafeId : String
     
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-        Text("\(businessNum)")
+        Text("\(cafeId)")
     }
 }
 
@@ -296,7 +303,7 @@ struct WriteReView: View {
     
     
     @Binding var isPresented: Bool
-    @Binding var cafeName : String
+    @Binding var cafeId : String
 
     @State var ratingValue : Int = 5
 

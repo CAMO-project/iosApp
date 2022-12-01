@@ -7,34 +7,13 @@
 
 import SwiftUI
 
-//struct StartView: View {
-//    @State
-//    var showSettings = false
-//
-//    var body: some View {
-//        NavigationView {
-//            Text("ㅁㅁㅁ")
-//                .navigationBarItems(trailing: Button(action: {
-//                    self.showSettings = true
-//                }, label: {
-//                    Text("로그인")
-//                }))
-//                .sheet(isPresented: $showSettings, content: {
-//                    SettingsView()
-//                })
-//        }
-//    }
-//}
-
 struct StartView: View {
     
     // 로그인
-    @State
-    var loginSettings = false
+    @State private var loginSettings = false
     
     // 회원가입
-    @State
-    var joinSettings = false
+    @State private var joinSettings = false
     
     @State private var isLogined = false
     @State private var isJoined = false

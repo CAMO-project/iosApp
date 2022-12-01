@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F20293A92939231800642839 /* CafeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293A82939231800642839 /* CafeListView.swift */; };
+		F20293AB2939236700642839 /* CouponView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293AA2939236700642839 /* CouponView.swift */; };
+		F20293AD293923AE00642839 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293AC293923AE00642839 /* ProfileView.swift */; };
+		F20293B22939244900642839 /* EditUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293B12939244900642839 /* EditUserInfoView.swift */; };
 		F23186192918969C0035E01B /* CAMOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23186182918969C0035E01B /* CAMOApp.swift */; };
 		F231861B2918969C0035E01B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F231861A2918969C0035E01B /* ContentView.swift */; };
 		F231861D2918969E0035E01B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F231861C2918969E0035E01B /* Assets.xcassets */; };
@@ -50,6 +54,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F20293A82939231800642839 /* CafeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeListView.swift; sourceTree = "<group>"; };
+		F20293AA2939236700642839 /* CouponView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponView.swift; sourceTree = "<group>"; };
+		F20293AC293923AE00642839 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		F20293B12939244900642839 /* EditUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserInfoView.swift; sourceTree = "<group>"; };
 		F23186152918969C0035E01B /* CAMO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CAMO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F23186182918969C0035E01B /* CAMOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAMOApp.swift; sourceTree = "<group>"; };
 		F231861A2918969C0035E01B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -103,6 +111,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F20293A72939230100642839 /* TabViews */ = {
+			isa = PBXGroup;
+			children = (
+				F20293A82939231800642839 /* CafeListView.swift */,
+				F20293AA2939236700642839 /* CouponView.swift */,
+				F20293AC293923AE00642839 /* ProfileView.swift */,
+			);
+			path = TabViews;
+			sourceTree = "<group>";
+		};
+		F20293B02939240200642839 /* StartViews */ = {
+			isa = PBXGroup;
+			children = (
+				F231864729189D5F0035E01B /* StartView.swift */,
+				F231864F2918BF340035E01B /* JoinView.swift */,
+				F231864529189D500035E01B /* LoginView.swift */,
+			);
+			path = StartViews;
+			sourceTree = "<group>";
+		};
 		F231860C2918969C0035E01B = {
 			isa = PBXGroup;
 			children = (
@@ -165,14 +193,14 @@
 		F231864229189D0D0035E01B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F20293B02939240200642839 /* StartViews */,
+				F20293A72939230100642839 /* TabViews */,
 				F24ED8472924CADB00AC25B8 /* QrCode.swift */,
-				F231864529189D500035E01B /* LoginView.swift */,
-				F231864729189D5F0035E01B /* StartView.swift */,
-				F231864F2918BF340035E01B /* JoinView.swift */,
 				F231865129192B1F0035E01B /* UnderlineTextFieldView.swift */,
 				F2913038291A9C0700A58087 /* MainView.swift */,
 				F2C6ACC6291CEB8F0013AF86 /* CafeInfoView.swift */,
 				F24ED80A29213B4600AC25B8 /* EditCafeView.swift */,
+				F20293B12939244900642839 /* EditUserInfoView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -352,6 +380,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F2C834A92928923C000FD0DC /* User.swift in Sources */,
+				F20293B22939244900642839 /* EditUserInfoView.swift in Sources */,
 				F2913039291A9C0700A58087 /* MainView.swift in Sources */,
 				F2A05BFC29288C3D00BB53DD /* LoginDTO.swift in Sources */,
 				F231864E2918BAE10035E01B /* StartView.swift in Sources */,
@@ -363,8 +392,11 @@
 				F24ED80B29213B4600AC25B8 /* EditCafeView.swift in Sources */,
 				F23186502918BF340035E01B /* JoinView.swift in Sources */,
 				F24ED8482924CADB00AC25B8 /* QrCode.swift in Sources */,
+				F20293AB2939236700642839 /* CouponView.swift in Sources */,
 				F2C6ACC7291CEB8F0013AF86 /* CafeInfoView.swift in Sources */,
+				F20293A92939231800642839 /* CafeListView.swift in Sources */,
 				F23186192918969C0035E01B /* CAMOApp.swift in Sources */,
+				F20293AD293923AE00642839 /* ProfileView.swift in Sources */,
 				F2C834B42937297C000FD0DC /* CafeListDTO.swift in Sources */,
 				F231865229192B1F0035E01B /* UnderlineTextFieldView.swift in Sources */,
 			);
