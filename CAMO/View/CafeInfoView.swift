@@ -9,21 +9,22 @@ import SwiftUI
 
 struct CafeInfoView: View {
     
-    @Binding var cafeId : String
+    @ObservedObject var cafeController = CafeController()
+    @ObservedObject var reviewController = ReviewController()
+
+//    var cafeInfo = Cafe()
     
     @State private var isActiveMenu: Bool = false
     @State private var isActiveWrite: Bool = false
     
-    // 주소, 전화번호, 쿠폰, 한줄소개
-//    @State private var cafeAdress : String
-
-    @State var reviewSettings = false
-    
-    @ObservedObject var cafeInfo = CafeInfoClass()
+    @State var reviewSettings: Bool = false
 //
-//    init() {
-//        networking.alamofireNetworking(cafeId: cafeId)
-//    }
+    init(_ cafeId: String) {
+        cafeController.getCafeInfo(cafeId: cafeId)
+        reviewController.getReivewList(cafeId: cafeId)
+        print(reviewController.getReivewList(cafeId: cafeId))
+//        cafeInfo = cafeController.cafeInfo
+    }
     
     var body: some View {
         ScrollView {
@@ -41,7 +42,7 @@ struct CafeInfoView: View {
                 VStack(alignment: .leading) {
                     Label {
                         // 지도
-                        Text("\(cafeInfo.cafeAddress)")
+                        Text("\(cafeController.cafeInfo.cafeAddress)")
                             .font(.system(size: 14))
                             .multilineTextAlignment(.leading)
                             .lineSpacing(5)
@@ -54,7 +55,7 @@ struct CafeInfoView: View {
                     .padding(.bottom, 20)
                     Label {
                         // 전화번호
-                        Text("\(cafeInfo.cafePhone)")
+                        Text("\(cafeController.cafeInfo.cafePhone)")
                             .font(.system(size: 14))
                     } icon : {
                         Image(systemName: "phone")
@@ -66,7 +67,7 @@ struct CafeInfoView: View {
                     HStack {
                         Label {
                             // 쿠폰개수
-                            Text("스탬프 0/8")
+                            Text("스탬프 \(cafeController.cafeInfo.cafeRewardstamp)")
                                 .font(.system(size: 14))
                         } icon : {
                             Image(systemName: "heart.circle")
@@ -78,7 +79,7 @@ struct CafeInfoView: View {
                         
                         Label {
                             // 쿠폰보상
-                            Text("5000원 이하 음료 가능")
+                            Text(cafeController.cafeInfo.cafeReward)
                                 .font(.system(size: 12))
                                 .lineLimit(1)
                                 .foregroundColor(Color("grayTextColor"))
@@ -95,7 +96,7 @@ struct CafeInfoView: View {
                     .padding(.bottom, 20)
                     Label {
                         // 한줄소개
-                        Text("안녕하세요. 카페 베이그입니다 :) \n 편하게 와서 쉬다 가세요~ \n 공지사항 : 10/08 휴무입니다.")
+                        Text(cafeController.cafeInfo.cafeIntroduce)
                             .font(.system(size: 14))
                             .lineSpacing(5)
                     } icon : {
@@ -120,7 +121,7 @@ struct CafeInfoView: View {
         
             // 대표 메뉴
             
-            NavigationLink(destination: menuListView(cafeId: $cafeId), isActive: $isActiveMenu) {
+            NavigationLink(destination: menuListView(cafeId: cafeController.cafeInfo.cafeId), isActive: $isActiveMenu) {
                 VStack {  // menu box
                     ZStack {
                         Text("대표 메뉴")
@@ -199,25 +200,6 @@ struct CafeInfoView: View {
             
             VStack {
                 
-                // 버튼
-//                NavigationLink(destination: WriteReView(cafeName: $cafeName), isActive: $isActiveWrite) {
-//                    Label {
-//                        Text("별점 및 리뷰 남기기")
-//                            .font(.system(size: 16))
-//                            .foregroundColor(.white)
-//                    } icon : {
-//                        Image(systemName: "pencil")
-//                            .environment(\.symbolVariants, .none)
-//                            .font(.system(size: 18))
-//                            .foregroundColor(.white)
-//                    }
-//                    .frame(maxWidth: .infinity)
-//
-//                }
-//                .padding(.vertical, 20)
-//                .background(Color("mainColor"))
-//                .cornerRadius(16)
-                
                 Button {
                     reviewSettings = true
                 } label: {
@@ -239,7 +221,7 @@ struct CafeInfoView: View {
                 .cornerRadius(16)
                 .fullScreenCover(isPresented: $reviewSettings) {
                     NavigationView {
-                        WriteReView(isPresented: $reviewSettings, cafeId: $cafeId)
+                        WriteReView(cafeId: cafeController.cafeInfo.cafeId, isPresented: $reviewSettings)
     //                        .navigationBarHidden(false)
                             .navigationBarBackButtonHidden(false)
                     }
@@ -247,19 +229,43 @@ struct CafeInfoView: View {
                 }
                 
                 HStack {
+                    Text("별점")
+                        .font(.system(size: 18))
+                        .fontWeight(.bold)
+                        .foregroundColor(Color("mainPointColor"))
+                        .padding(.trailing, 10)
                     StarsView(rating: 3.5)
+                        .padding(.trailing, 10)
+                    Text("3.5")
+                        .font(.system(size: 14))
                 }
                 
+                ReviewListRow(ReviewListDTO(reviewId: 1, userEmail: "dd", reviewRating: 3, reviewContent: "dddd", reviewDate: "dd", userId: 3, cafeId: "10000000001"))
+                    
+                List(reviewController.reviewList) { reviewListDTO in
+
+                    ReviewListRow(reviewListDTO)
+                }
+                .listStyle(.plain)
+                .padding(.horizontal, 30)
+                .padding(.top, 0).ignoresSafeArea()
+                .padding(.bottom, 1)
+                .background(Color("bgMainColor"))
+                
+                    
+                VStack {
+                    Text("리뷰 총 개수 : \(reviewController.reviewList.count)")
+                }
                 
             } // vstack
             .padding(30)
           
         } // scrollView
-        .navigationTitle("\(cafeInfo.cafeName)")
+        .navigationTitle("\(cafeController.cafeInfo.cafeName)")
         .navigationBarTitleDisplayMode(.inline)
         .background(Color("bgMainColor"))
         .onAppear() {
-            cafeInfo.alamofireNetworking(cafeId: cafeId)
+            print("reviewList: \(reviewController.reviewList)")
         }
     }
 }
@@ -271,10 +277,32 @@ struct CafeInfoView: View {
 //}
 
 
+struct ReviewListRow: View {
+    
+    var reviewListDTO: ReviewListDTO
+    
+    init(_ reviewListDTO: ReviewListDTO) {
+        self.reviewListDTO = reviewListDTO
+    }
+    
+    var body: some View {
+        VStack (alignment: .leading) {
+//            Text("\(reviewListDTO.userEmail)")
+//            StarsView(rating: Float(reviewListDTO.reviewRating))
+//            Text("\(reviewListDTO.reviewRating)")
+//            Text("\(reviewListDTO.reviewContent)")
+//            Text("\(reviewListDTO.reviewDate)")
+            Text("hello")
+        }
+    }
+}
+
+
+
 // CafeInfoView -> 메뉴 더보기 뷰
 struct menuListView: View {
     
-    @Binding var cafeId : String
+    var cafeId : String
     
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
@@ -284,26 +312,28 @@ struct menuListView: View {
 
 
 
-fileprivate struct SaveBtn: View {
-    @Binding var isPresented : Bool
-    
-    var body: some View {
-        Button(action: {
-            self.isPresented = false
-        }, label: {
-            Text("확인")
-        })
-    }
-}
+//fileprivate struct SaveBtn: View {
+//    @Binding var isPresented : Bool
+//
+//    var body: some View {
+//        Button(action: {
+//            self.isPresented = false
+//        }, label: {
+//            Text("확인")
+//        })
+//    }
+//}
 
 
 //
 // CafeInfoView -> 리뷰 작성하기 뷰
 struct WriteReView: View {
     
+    @ObservedObject var reviewController = ReviewController()
+    
+    var cafeId: String
     
     @Binding var isPresented: Bool
-    @Binding var cafeId : String
 
     @State var ratingValue : Int = 5
 
@@ -316,6 +346,12 @@ struct WriteReView: View {
     @State var placeHolder : String = "리뷰 작성하기"
     
     @State var overflowTextAlert : Bool = false
+    
+    init(cafeId: String, isPresented: Binding<Bool>) {
+        self.cafeId = cafeId
+        self._isPresented = isPresented
+        
+    }
     
     var body: some View {
         ScrollView {
@@ -418,14 +454,15 @@ struct WriteReView: View {
         .navigationTitle("별점 및 리뷰 남기기")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(leading: Button(action: {
-            self.isPresented = false
+            isPresented = false
         }, label: {
             Text("취소")
         }), trailing: Button(action: {
             if (inputReview.count > 500) {
                     overflowTextAlert = true
             } else {
-                self.isPresented = false
+                reviewController.writeReview(Review(reviewId: 0, userEmail: user.email, reviewRating: ratingValue, reviewContent: inputReview, reviewDate: "", cafeId: cafeId, userId: user.userId))
+                isPresented = false
             }
         }, label: {
             Text("확인")

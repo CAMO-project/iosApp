@@ -117,7 +117,7 @@ struct EditCafeInfoView: View {
     @State var inputCafeName: String = cafe.cafeName
     @State var inputCafeAddress: String = cafe.cafeAddress
     @State var inputCafePhone: String = cafe.cafePhone
-    @State var inputCouponTotal: Int = cafe.stampsNumber
+    @State var inputCouponTotal: Int = cafe.cafeRewardstamp
     @State var inputCouponReward: String = cafe.cafeReward
     @State var inputCafeIntroduce: String = cafe.cafeIntroduce
     
@@ -289,13 +289,13 @@ struct EditCafeInfoView: View {
                 // 하나라도 빈칸이 있는 경우
                 textMsg = false
             } else {
-                cafeUpdate(editCafeDTO: EditCafeDTO(cafeName: inputCafeName, cafeAddress: inputCafeAddress, cafePhone: inputCafeAddress, cafeIntroduce: inputCafeIntroduce, cafeReward: inputCouponReward, stampsNumber: inputCouponTotal))
+                cafeUpdate(editCafeDTO: EditCafeDTO(cafeName: inputCafeName, cafeAddress: inputCafeAddress, cafePhone: inputCafeAddress, cafeIntroduce: inputCafeIntroduce, cafeReward: inputCouponReward, cafeRewardstamp: inputCouponTotal))
                 self.isPresented = false
             }
         }, label: {
             Text("확인")
         }))
-        .background(Color("bgPointColor"))
+        .background(Color("bgMainColor"))
     } // body
 }
 

@@ -67,10 +67,12 @@ struct CouponRow: View {
     
     @State private var userEmail: String = "fsfldfjsljfsl"
     
+    var cafeId = ""
+    
     var body: some View {
         VStack {
 
-            NavigationLink(destination: CafeInfoView(businessNum: $businessNum, cafeName : $cafeName, cafeAddress : $cafeAddress), isActive: $isActive) {
+//            NavigationLink(destination: CafeInfoView(cafeId), isActive: $isActive) {
                 
                 HStack {
                     VStack (alignment: .leading) {
@@ -107,7 +109,7 @@ struct CouponRow: View {
                 } // hstack
                     
                     
-            } // navigationLink
+//            } // navigationLink
             .frame(maxWidth: .infinity)
             .background(Color("bgColor"))
             .border(Color.black.opacity(0), width: 0)

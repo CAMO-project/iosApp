@@ -16,7 +16,7 @@ struct Cafe : Codable {
     var cafePhone: String
     var cafeIntroduce: String
     var cafeReward: String
-    var stampsNumber: Int
+    var cafeRewardstamp: Int
     
     init() {
         cafeId = ""
@@ -26,7 +26,7 @@ struct Cafe : Codable {
         cafePhone = ""
         cafeIntroduce = ""
         cafeReward = ""
-        stampsNumber = 0
+        cafeRewardstamp = 0
     }
     
     // 카페 생성자
@@ -38,7 +38,7 @@ struct Cafe : Codable {
         self.cafePhone = cafePhone
         cafeIntroduce = ""
         cafeReward = ""
-        stampsNumber = 0
+        cafeRewardstamp = 0
     }
     
 }
@@ -46,15 +46,15 @@ struct Cafe : Codable {
 struct EditCafeDTO : Codable {
     
     var cafeName, cafeAddress, cafePhone, cafeIntroduce, cafeReward : String
-    var stampsNumber: Int
+    var cafeRewardstamp: Int
     
-    init(cafeName: String, cafeAddress: String, cafePhone: String, cafeIntroduce: String, cafeReward: String, stampsNumber: Int) {
+    init(cafeName: String, cafeAddress: String, cafePhone: String, cafeIntroduce: String, cafeReward: String, cafeRewardstamp: Int) {
         self.cafeName = cafeName
         self.cafeAddress = cafeAddress
         self.cafePhone = cafePhone
         self.cafeIntroduce = cafeIntroduce
         self.cafeReward = cafeReward
-        self.stampsNumber = stampsNumber
+        self.cafeRewardstamp = cafeRewardstamp
     }
 }
 

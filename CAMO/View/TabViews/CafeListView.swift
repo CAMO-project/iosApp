@@ -9,12 +9,12 @@ import SwiftUI
 
 struct CafeListView: View {
 
-    @ObservedObject var networking = CafeListSetUpClass()
+    @ObservedObject var cafeController = CafeController()
     
     @State private var inputSearch: String = ""
     
     init() {
-        networking.alamofireNetworking()
+        cafeController.getCafeList()
     }
     
     var body: some View {
@@ -52,7 +52,7 @@ struct CafeListView: View {
 
             
             
-            List(networking.cafeList) { cafeListDTO in
+            List(cafeController.cafeList) { cafeListDTO in
                 
                 CafeListRow(cafeListDTO)
                 
@@ -81,7 +81,6 @@ struct CafeListRow: View {
 //    var avgRating : Float
     
     var cafeListDTO : CafeListDTO
-    @State private var cafeId : String = ""
     
     @State private var isActive: Bool = false
     
@@ -92,12 +91,14 @@ struct CafeListRow: View {
     
     var body: some View {
         ZStack {
-            NavigationLink(destination: CafeInfoView(cafeId: $cafeId), isActive: $isActive) {
-                EmptyView()
-            } //navigationlink
-            .opacity(0.0)
-//            .hidden()
-            .buttonStyle(PlainButtonStyle())
+            if (isActive == true) {
+                NavigationLink(destination: CafeInfoView(cafeListDTO.cafeId), isActive: $isActive) {
+                    EmptyView()
+                } //navigationlink
+                .opacity(0.0)
+                //            .hidden()
+                .buttonStyle(PlainButtonStyle())
+            }
             
             VStack (alignment: .leading) {
                 HStack {
@@ -122,6 +123,9 @@ struct CafeListRow: View {
         .listRowBackground(Color("bgMainColor"))
         .onAppear() {
             print(cafeListDTO.cafeName)
+        }
+        .onTapGesture {
+            isActive.toggle()
         }
     }
 }
