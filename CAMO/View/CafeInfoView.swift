@@ -11,26 +11,21 @@ struct CafeInfoView: View {
     
     @ObservedObject var cafeController = CafeController()
     @ObservedObject var reviewController = ReviewController()
-
-//    var cafeInfo = Cafe()
     
     @State private var isActiveMenu: Bool = false
     @State private var isActiveWrite: Bool = false
     
     @State var reviewSettings: Bool = false
-//
-    init(_ cafeId: String) {
+    var avgRating: Float = 0
+
+    init(_ cafeId: String, _ avgRating: Float) {
         cafeController.getCafeInfo(cafeId: cafeId)
         reviewController.getReivewList(cafeId: cafeId)
-        print(reviewController.getReivewList(cafeId: cafeId))
-//        cafeInfo = cafeController.cafeInfo
+        self.avgRating = avgRating
     }
     
     var body: some View {
         ScrollView {
-//            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-//            Text("사업자번호 : \(businessNum)")
-//            Text("카페 이름 : \(cafeName)")
             VStack {
                 Image("testImage1")
 //                    .renderingMode(.original)
@@ -199,7 +194,6 @@ struct CafeInfoView: View {
             // 별점 및 리뷰
             
             VStack {
-                
                 Button {
                     reviewSettings = true
                 } label: {
@@ -228,35 +222,74 @@ struct CafeInfoView: View {
                     
                 }
                 
-                HStack {
-                    Text("별점")
-                        .font(.system(size: 18))
-                        .fontWeight(.bold)
-                        .foregroundColor(Color("mainPointColor"))
-                        .padding(.trailing, 10)
-                    StarsView(rating: 3.5)
-                        .padding(.trailing, 10)
-                    Text("3.5")
-                        .font(.system(size: 14))
-                }
-                
-                ReviewListRow(ReviewListDTO(reviewId: 1, userEmail: "dd", reviewRating: 3, reviewContent: "dddd", reviewDate: "dd", userId: 3, cafeId: "10000000001"))
+                if (reviewController.reviewList.count == 0) {
+                    HStack {
+                        Text("별점")
+                            .font(.system(size: 18))
+                            .fontWeight(.bold)
+                            .foregroundColor(Color("mainPointColor"))
+                            .padding(.trailing, 10)
+                        Text("아직 별점이 없습니다.")
+                            .font(.system(size: 14))
+                        Spacer()
+                    }
+                    .padding(.vertical, 30)
                     
-                List(reviewController.reviewList) { reviewListDTO in
-
-                    ReviewListRow(reviewListDTO)
-                }
-                .listStyle(.plain)
-                .padding(.horizontal, 30)
-                .padding(.top, 0).ignoresSafeArea()
-                .padding(.bottom, 1)
-                .background(Color("bgMainColor"))
-                
                     
-                VStack {
-                    Text("리뷰 총 개수 : \(reviewController.reviewList.count)")
+                    HStack {
+                        Text("이용자 리뷰")
+                            .font(.system(size: 18))
+                            .fontWeight(.bold)
+                            .foregroundColor(Color("mainPointColor"))
+                            .padding(.trailing, 10)
+                        
+                        Text("아직 이용자 리뷰가 없습니다.")
+                            .font(.system(size: 14))
+                        Spacer()
+                            
+                    }
+                    .padding(.bottom, 30)
+                    
+                } else {
+                    HStack {
+                        Text("별점")
+                            .font(.system(size: 18))
+                            .fontWeight(.bold)
+                            .foregroundColor(Color("mainPointColor"))
+                            .padding(.trailing, 10)
+                        StarsView(rating: avgRating)
+                            .padding(.trailing, 10)
+                        Text("\(avgRating)")
+                            .font(.system(size: 14))
+                        Spacer()
+                    }
+                    .padding(.vertical, 30)
+                    
+                    
+                    HStack {
+                        Text("이용자 리뷰")
+                            .font(.system(size: 18))
+                            .fontWeight(.bold)
+                            .foregroundColor(Color("mainPointColor"))
+                            .padding(.trailing, 10)
+                        
+                        Text("\(reviewController.reviewList.count)개")
+                            .font(.system(size: 14))
+                        Spacer()
+                            
+                    }
+                    
+                    VStack{
+                        List(reviewController.reviewList) { reviewListDTO in
+                            ReviewListRow(reviewListDTO)
+                        }
+                        .listStyle(.plain)
+                        .padding(.top, 0).ignoresSafeArea()
+                        .padding(.bottom, 1)
+                        .background(Color("bgMainColor"))
+                    }.frame(maxWidth: .infinity, minHeight: 500)
                 }
-                
+             
             } // vstack
             .padding(30)
           
@@ -285,15 +318,41 @@ struct ReviewListRow: View {
         self.reviewListDTO = reviewListDTO
     }
     
+    // reviewDate userEmail         staricon reviewRating
+    // reviewContent
+    
     var body: some View {
         VStack (alignment: .leading) {
-//            Text("\(reviewListDTO.userEmail)")
-//            StarsView(rating: Float(reviewListDTO.reviewRating))
-//            Text("\(reviewListDTO.reviewRating)")
-//            Text("\(reviewListDTO.reviewContent)")
-//            Text("\(reviewListDTO.reviewDate)")
-            Text("hello")
-        }
+            HStack {
+                HStack {
+                    Text(reviewListDTO.reviewDate)
+                        .font(.system(size: 12))
+                        .padding(.trailing, 10)
+                        .foregroundColor(Color("grayTextColor"))
+                    Text(reviewListDTO.userEmail)
+                        .font(.system(size: 12))
+                        .foregroundColor(Color("grayTextColor"))
+                }
+                Spacer()
+                HStack {
+                    Image(systemName: "star.fill")
+                        .environment(\.symbolVariants, .none)
+                        .font(.system(size: 14))
+                        .foregroundColor(.yellow)
+                    Text("\(reviewListDTO.reviewRating)")
+                        .font(.system(size: 12))
+                }
+            } // hstack
+            .padding(.bottom, 10)
+            Text(reviewListDTO.reviewContent)
+                .font(.system(size: 14))
+            
+        } // vstack
+        .padding(.vertical, 20)
+        .background(Color("bgMainColor"))
+        .listRowBackground(Color("bgMainColor"))
+        
+    
     }
 }
 

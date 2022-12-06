@@ -14,6 +14,8 @@
 		F20293B5293B788600642839 /* ReviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293B4293B788600642839 /* ReviewController.swift */; };
 		F20293B8293B78D900642839 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293B7293B78D900642839 /* Review.swift */; };
 		F20293BA293B7C4B00642839 /* ReviewListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293B9293B7C4B00642839 /* ReviewListDTO.swift */; };
+		F20293BD293E52E200642839 /* CouponController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293BC293E52E200642839 /* CouponController.swift */; };
+		F20293BF293E52F200642839 /* CouponDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293BE293E52F200642839 /* CouponDTO.swift */; };
 		F23186192918969C0035E01B /* CAMOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23186182918969C0035E01B /* CAMOApp.swift */; };
 		F231861B2918969C0035E01B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F231861A2918969C0035E01B /* ContentView.swift */; };
 		F231861D2918969E0035E01B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F231861C2918969E0035E01B /* Assets.xcassets */; };
@@ -64,6 +66,8 @@
 		F20293B4293B788600642839 /* ReviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewController.swift; sourceTree = "<group>"; };
 		F20293B7293B78D900642839 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		F20293B9293B7C4B00642839 /* ReviewListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListDTO.swift; sourceTree = "<group>"; };
+		F20293BC293E52E200642839 /* CouponController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponController.swift; sourceTree = "<group>"; };
+		F20293BE293E52F200642839 /* CouponDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponDTO.swift; sourceTree = "<group>"; };
 		F23186152918969C0035E01B /* CAMO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CAMO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F23186182918969C0035E01B /* CAMOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAMOApp.swift; sourceTree = "<group>"; };
 		F231861A2918969C0035E01B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -155,6 +159,14 @@
 			path = Entity;
 			sourceTree = "<group>";
 		};
+		F20293BB293E52CF00642839 /* Coupon */ = {
+			isa = PBXGroup;
+			children = (
+				F20293BC293E52E200642839 /* CouponController.swift */,
+			);
+			path = Coupon;
+			sourceTree = "<group>";
+		};
 		F231860C2918969C0035E01B = {
 			isa = PBXGroup;
 			children = (
@@ -236,6 +248,7 @@
 				F2A05BFB29288C3D00BB53DD /* LoginDTO.swift */,
 				F2C834B32937297C000FD0DC /* CafeListDTO.swift */,
 				F20293B9293B7C4B00642839 /* ReviewListDTO.swift */,
+				F20293BE293E52F200642839 /* CouponDTO.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -243,6 +256,7 @@
 		F2C834A229288D86000FD0DC /* API */ = {
 			isa = PBXGroup;
 			children = (
+				F20293BB293E52CF00642839 /* Coupon */,
 				F20293B3293B787500642839 /* Review */,
 				F2C834A529288DC0000FD0DC /* Cafe */,
 				F2C834A429288DB5000FD0DC /* User */,
@@ -405,12 +419,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				F2C834A92928923C000FD0DC /* User.swift in Sources */,
+				F20293BD293E52E200642839 /* CouponController.swift in Sources */,
 				F20293B5293B788600642839 /* ReviewController.swift in Sources */,
 				F20293B22939244900642839 /* EditUserInfoView.swift in Sources */,
 				F2913039291A9C0700A58087 /* MainView.swift in Sources */,
 				F2A05BFC29288C3D00BB53DD /* LoginDTO.swift in Sources */,
 				F231864E2918BAE10035E01B /* StartView.swift in Sources */,
 				F2C834AB292A1A57000FD0DC /* CafeController.swift in Sources */,
+				F20293BF293E52F200642839 /* CouponDTO.swift in Sources */,
 				F231864629189D500035E01B /* LoginView.swift in Sources */,
 				F231861B2918969C0035E01B /* ContentView.swift in Sources */,
 				F2C834A729288DF4000FD0DC /* UserController.swift in Sources */,

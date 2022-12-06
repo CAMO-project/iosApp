@@ -7,6 +7,8 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
+import Combine
 
 class ReviewController: ObservableObject {
 
@@ -52,7 +54,7 @@ class ReviewController: ObservableObject {
     
     func getReivewList(cafeId: String) {
         
-        let url = host + "/review/cafe/"+cafeId
+        let url = host + "/review/cafe/" + cafeId
         
         // URLRequest 객체 생성 (url 전달)
         var request = URLRequest(url: URL(string: url)!)

@@ -7,9 +7,8 @@
 
 import Foundation
 
-struct ReviewListDTO: Codable,Identifiable {
-    let id = UUID()
-    
+struct ReviewListDTO : Codable, Identifiable {
+
     var reviewId: Int
     var userEmail: String
     var reviewRating: Int
@@ -17,6 +16,8 @@ struct ReviewListDTO: Codable,Identifiable {
     var reviewDate: String
     var userId: Int
     var cafeId: String
+    
+    let id = UUID()
 }
 
 /*{
