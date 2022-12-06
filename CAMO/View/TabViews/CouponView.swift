@@ -10,6 +10,13 @@ import SwiftUI
 // MARK: ----CouponView
 struct CouponView: View {
     
+    @ObservedObject var couponController = CouponController()
+    
+    init() {
+        couponController.getCouponList()
+    }
+    
+    
     var body: some View {
         
         VStack {
@@ -25,28 +32,31 @@ struct CouponView: View {
             .padding(.bottom, 0)
         
             
-            ScrollView {
+            VStack {
                 
-                VStack {
-                    CouponRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", couponTotal: 8, couponMy: 4)
-                    CouponRow(businessNum: "2222", cafeName: "포롱", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", couponTotal: 10, couponMy: 2)
-                    CouponRow(businessNum: "1111", cafeName: "프린세스", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", couponTotal: 10, couponMy: 10)
-                    CouponRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", couponTotal: 8, couponMy: 4)
-                    CouponRow(businessNum: "2222", cafeName: "포롱", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", couponTotal: 10, couponMy: 2)
-                    CouponRow(businessNum: "1111", cafeName: "프린세스", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", couponTotal: 10, couponMy: 10)
-                    CouponRow(businessNum: "1111", cafeName: "베이그", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", couponTotal: 8, couponMy: 4)
-                    CouponRow(businessNum: "2222", cafeName: "포롱", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", couponTotal: 10, couponMy: 2)
-                    CouponRow(businessNum: "1111", cafeName: "프린세스", cafeAddress: "충청남도 천안시 서북구 천안대로 1223-24 (우)31080", couponTotal: 10, couponMy: 10)
+                List(couponController.couponList) { couponDTO in
+                    CouponRow(couponDTO)
                 }
-                .padding(.top, 30)
+                .listStyle(.plain)
+                .padding(.horizontal, 30)
+                .padding(.top, 0).ignoresSafeArea()
+                .padding(.bottom, 1)
                 .background(Color("bgMainColor"))
                 
-            } // scrollView
+                
+            }
+            .padding(.top, 30)
             .background(Color("bgMainColor"))
+            
+
         } // vstack
 //        .navigationTitle(Text("쿠폰").font(.system(size: 28)))
+        .navigationBarTitleDisplayMode(.inline)
         .background(Color("bgMainColor"))
-        
+        .onAppear() {
+            print("couponview 나타남")
+            print(couponController.couponList.count)
+        }
     }
     
 }
@@ -55,30 +65,26 @@ struct CouponView: View {
 
 struct CouponRow: View {
     
-    @State var businessNum : String
-    @State var cafeName : String
-    @State var cafeAddress : String
-    @State var couponTotal : Int
-    @State var couponMy : Int
+    var couponDTO : CouponDTO
     
     @State private var isActive: Bool = false
     @State private var popQrAlert: Bool = false
     @State private var popColorAlert: Bool = false
     
-    @State private var userEmail: String = "fsfldfjsljfsl"
-    
-    var cafeId = ""
+    init(_ couponDTO: CouponDTO) {
+        self.couponDTO = couponDTO
+    }
     
     var body: some View {
         VStack {
 
-//            NavigationLink(destination: CafeInfoView(cafeId), isActive: $isActive) {
+            NavigationLink(destination: CafeInfoView(couponDTO.cafeId), isActive: $isActive) {
                 
                 HStack {
                     VStack (alignment: .leading) {
-                        Text("\(cafeName)").font(.system(size: 16))
+                        Text("\(couponDTO.cafeName)").font(.system(size: 16))
                             .padding(.bottom, 10)
-                        Text("\(cafeAddress)").font(.system(size: 12))
+                        Text("\(couponDTO.cafeAddress)").font(.system(size: 12))
                             .foregroundColor(Color("grayTextColor"))
                             .lineLimit(1)
                             .padding(.bottom, 10)
@@ -99,8 +105,10 @@ struct CouponRow: View {
                     .padding(.leading, 20)
                     .padding(.vertical, 20)
                     
+                    Spacer()
+                    
                     VStack {
-                        Text("\(couponMy) / \(couponTotal)")
+                        Text("\(couponDTO.couponUserstamp) / \(couponDTO.cafeRewardstamp)")
                             .font(.system(size: 14))
                     }
                     .frame(maxWidth: 50, maxHeight: .infinity ,alignment: .trailing)
@@ -109,7 +117,7 @@ struct CouponRow: View {
                 } // hstack
                     
                     
-//            } // navigationLink
+            } // navigationLink
             .frame(maxWidth: .infinity)
             .background(Color("bgColor"))
             .border(Color.black.opacity(0), width: 0)
@@ -124,7 +132,7 @@ struct CouponRow: View {
             // 구현할 동작
             }
 
-            if (couponMy >= couponTotal) {
+            if (couponDTO.couponUserstamp >= couponDTO.cafeRewardstamp) {
                 VStack {
                     Text("쿠폰 사용하기")
                         .font(.system(size: 14))

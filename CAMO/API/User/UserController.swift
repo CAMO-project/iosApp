@@ -172,36 +172,6 @@ func getUser() -> User {
     
 }
 
-//func getUserWithReturn() -> User {
-//    let url = host + "/user/id/" + String(user.userId)
-//
-//    // URLRequest 객체 생성 (url 전달)
-//    var request = URLRequest(url: URL(string: url)!)
-//    // 메소드 지정
-//    request.httpMethod = "GET"
-//    // 헤더 정보 설정
-//    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//
-//    AF.request(request).responseDecodable(of:User.self) { response in
-//        switch response.result {
-//        case .success:
-//            print("호출 성공 getUserWithReturn (새로고침)")
-//
-//            user = response.value ?? user
-//            print(user)
-//
-//        case .failure(_):
-//            print(response.result)
-//            print("호출 실패 getUserWithReturn (새로고침)")
-//        }
-//    }
-//
-//    return user
-//
-//}
-
-
-
 
 // postman으로 확인했을때 delete 잘 실행됐는데 로그에는 호출 실패로 뜸
 // 리퀘에 user 반환하는거 어떻게 없애
@@ -215,7 +185,7 @@ func deleteUser() {
     // 헤더 정보 설정
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
-    AF.request(request).responseDecodable(of:User.self) { response in
+    AF.request(request).response { response in
         print("request api \(user)")
         switch response.result {
         case .success:

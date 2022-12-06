@@ -18,6 +18,11 @@ struct CafeInfoView: View {
     @State var reviewSettings: Bool = false
     var avgRating: Float = 0
 
+    init(_ cafeId: String) {
+        cafeController.getCafeInfo(cafeId: cafeId)
+        reviewController.getReivewList(cafeId: cafeId)
+    }
+    
     init(_ cafeId: String, _ avgRating: Float) {
         cafeController.getCafeInfo(cafeId: cafeId)
         reviewController.getReivewList(cafeId: cafeId)
