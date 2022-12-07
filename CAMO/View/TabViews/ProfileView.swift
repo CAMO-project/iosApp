@@ -11,6 +11,8 @@ import SwiftUI
 // MARK: ----ProfileView
 struct ProfileView: View {
     
+    @ObservedObject var cafeController = CafeController()
+    
     @State var editUserInfo: Bool = false
     @State private var popQrAlert: Bool  = false
     @State private var qrScanSettings: Bool = false
@@ -20,10 +22,13 @@ struct ProfileView: View {
     @State var editCafeMenu = false
     
     @State var userInfo: User = getUser()
-    @State var cafeInfo: Cafe = getCafe()
     
 //    var userInfo = User()
 //    var cafeInfo : Cafe = cafe
+    
+    init() {
+        cafeController.getCafe()
+    }
     
     var body: some View {
         VStack {
@@ -209,7 +214,7 @@ struct ProfileView: View {
                         
                     } else if (userInfo.role == 1) {
                         VStack {
-                            Text("카페 \(cafeInfo.cafeName)")
+                            Text("카페 \(cafeController.cafe.cafeName)")
                                 .font(.system(size: 18))
                                 .foregroundColor(Color("mainPointColor"))
                                 .padding(.bottom, 10)
@@ -328,16 +333,16 @@ struct ProfileView: View {
             
             
             if (userInfo.role == 1) {
-
+                
                 ZStack {
-
+                    
                     Text("")
                         .font(.system(size: 0))
                         .frame(maxWidth: .infinity)
                         .ignoresSafeArea(.all, edges: .all)
                         .background(Color("mainColor").clipShape(CustomShape())
-                                        .rotationEffect(.init(degrees: 180)))
-
+                            .rotationEffect(.init(degrees: 180)))
+                    
                     Image(systemName: "camera")
                         .font(.system(size: 24))
                         .foregroundColor(.white)
@@ -349,26 +354,16 @@ struct ProfileView: View {
                 }
                 .sheet(isPresented: $qrScanSettings) {
                     QRCodeScanView(isPresented: $qrScanSettings)
+                    
                 }
-
             }
+
         } // vstack
         .background(Color("bgMainColor"))
         .refreshable {
             userInfo = getUser()
-            cafeInfo = getCafe()
-//            print("새로고침 : \(user)")
             print("새로고침: \(userInfo)")
         }
-        .onAppear() {
-//            userInfo = getUserWithReturn()
-//            cafeInfo = getCafeWithReturn()
-//            print("appear :)")
-//            print("cafeInfo : \(cafeInfo)")
-        }
-//        .onDisappear() {
-//            print("disappear :)")
-//        }
         
     }
     

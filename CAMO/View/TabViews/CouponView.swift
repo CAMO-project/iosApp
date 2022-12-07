@@ -31,25 +31,6 @@ struct CouponView: View {
             .padding(.top, 30)
             .padding(.bottom, 0)
             
-            
-//            VStack {
-//
-//                CouponRow(CouponDTO(cafeId: "dd", cafeName: "qqqq", cafeAddress: "ddd", cafeReward: "dd", cafeRewardstamp: 10, couponUserstamp: 10))
-//
-//                List(couponController.couponList) { couponDTO in
-//                    CouponRow(couponDTO)
-//                }
-//                .listStyle(.plain)
-//                .padding(.top, 0).ignoresSafeArea()
-//                .padding(.bottom, 1)
-//                .padding(.horizontal, 0).ignoresSafeArea()
-//                .background(Color("bgMainColor"))
-//
-//
-//            }
-//            .padding(.top, 30)
-//            .background(Color("bgMainColor"))
-            
             ScrollView {
                 
                 ForEach(couponController.couponList) { couponDTO in
@@ -62,7 +43,6 @@ struct CouponView: View {
             
             
         } // vstack
-        //        .navigationTitle(Text("쿠폰").font(.system(size: 28)))
         .navigationBarTitleDisplayMode(.inline)
         .background(Color("bgMainColor"))
         .onAppear() {

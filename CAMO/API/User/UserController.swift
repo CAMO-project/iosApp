@@ -12,52 +12,52 @@ import Alamofire
 //    case pathErr
 //}
 
-func login(loginDTO: LoginDTO) -> Bool {
-    
-    var isLogin = true
-    
-    let url = host + "/user/" + loginDTO.email + "?password=" + loginDTO.password
-    
-    // URLRequest 객체 생성 (url 전달)
-    var request = URLRequest(url: URL(string: url)!)
-    // 메소드 지정
-    request.httpMethod = "GET"
-    // 헤더 정보 설정
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//    // json 인코더 생성
-//    let encoder = JSONEncoder()
+//func login(loginDTO: LoginDTO) -> Bool {
 //
-//    // json 출력 시 예쁘게 출력
-//    encoder.outputFormatting = .prettyPrinted
+//    var isLogin = true
 //
-//    do {
-//        // json 객체로 변환
-//        let encodedData = try encoder.encode(loginDTO)
-//        // Request Body에 json 추가
-//        request.httpBody = encodedData
-//    } catch {
-//        print("error11111")
+//    let url = host + "/user/" + loginDTO.email + "?password=" + loginDTO.password
+//
+//    // URLRequest 객체 생성 (url 전달)
+//    var request = URLRequest(url: URL(string: url)!)
+//    // 메소드 지정
+//    request.httpMethod = "GET"
+//    // 헤더 정보 설정
+//    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+////    // json 인코더 생성
+////    let encoder = JSONEncoder()
+////
+////    // json 출력 시 예쁘게 출력
+////    encoder.outputFormatting = .prettyPrinted
+////
+////    do {
+////        // json 객체로 변환
+////        let encodedData = try encoder.encode(loginDTO)
+////        // Request Body에 json 추가
+////        request.httpBody = encodedData
+////    } catch {
+////        print("error11111")
+////    }
+//
+//    AF.request(request).responseDecodable(of:User.self) { response in
+//        switch response.result {
+//        case .success:
+//            print("호출 성공")
+//
+//            user = response.value ?? user
+//            print(user)
+//            isLogin = true
+//
+//        case .failure(_):
+//            print(response.result)
+//            print("호출 실패")
+//            isLogin = false
+//            print(isLogin)
+//        }
 //    }
-    
-    AF.request(request).responseDecodable(of:User.self) { response in
-        switch response.result {
-        case .success:
-            print("호출 성공")
-            
-            user = response.value ?? user
-            print(user)
-            isLogin = true
-            
-        case .failure(_):
-            print(response.result)
-            print("호출 실패")
-            isLogin = false
-            print(isLogin)
-        }
-    }
-    
-    return isLogin
-}
+//
+//    return isLogin
+//}
 
 func join(userJoin: User) {
     
@@ -86,22 +86,21 @@ func join(userJoin: User) {
 ////            request.httpBody = jsonStr
 //        }
     } catch {
-        print("error11111")
+        print("error")
     }
     
     AF.request(request).responseString { (response) in
         switch response.result {
         case .success:
-            print("POST 성공")
+            print("회원가입 성공")
         case .failure(_):
-            print("error")
+            print("회원가입 실패")
         }
     }
     
 }
 
 
-// postman으로 실행했을때도 안되던데 서버 코드가 잘못된듯
 func editUserInfo(editUserDTO: EditUserDTO) {
     
     let url = host + "/user/" + String(user.userId)
@@ -198,4 +197,37 @@ func deleteUser() {
             print("호출 실패 deleteUser")
         }
     }
+}
+
+
+class UserController: ObservableObject {
+    
+    @Published var user = User()
+    
+    func login(loginDTO: LoginDTO) {
+        let url = host + "/user/" + loginDTO.email + "?password=" + loginDTO.password
+        
+        // URLRequest 객체 생성 (url 전달)
+        var request = URLRequest(url: URL(string: url)!)
+        // 메소드 지정
+        request.httpMethod = "GET"
+        // 헤더 정보 설정
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        AF.request(request).responseDecodable(of:User.self) { response in
+            switch response.result {
+            case .success(let value):
+                print("login 성공")
+                self.user = value
+                
+            case .failure(_):
+                print(response.result)
+                print("login 실패")
+                
+            }
+        }
+        
+    }
+    
+    
 }

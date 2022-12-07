@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 
+
 class CouponController: ObservableObject {
     
     @Published var couponList = [CouponDTO]()
@@ -40,6 +41,7 @@ class CouponController: ObservableObject {
     }
     
     
-    
-    
 }
+
+
+

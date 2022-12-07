@@ -23,7 +23,7 @@ struct MainView: View {
 
         UITabBar.appearance().backgroundColor = UIColor(Color("bgMainColor"))
         UITabBar.appearance().standardAppearance = appearance
-        }
+    }
     
     
     
@@ -53,6 +53,10 @@ struct MainView: View {
                 }
         }
         .accentColor(Color("mainPointColor"))
+        .onAppear() {
+            checkCameraPermission()
+            checkAlbumPermission()
+        }
         
     }
 }

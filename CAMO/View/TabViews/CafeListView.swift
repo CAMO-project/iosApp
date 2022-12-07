@@ -122,7 +122,7 @@ struct CafeListRow: View {
         .background(Color("bgMainColor"))
         .listRowBackground(Color("bgMainColor"))
         .onAppear() {
-            print(cafeListDTO.cafeName)
+//            print(cafeListDTO.cafeName)
         }
         .onTapGesture {
             isActive.toggle()

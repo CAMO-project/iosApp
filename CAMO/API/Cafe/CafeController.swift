@@ -109,61 +109,64 @@ func cafeUpdate(editCafeDTO : EditCafeDTO) {
 }
 
 
-func getCafe() {
-    let url = host + "/cafe/" + String(user.userId)
-    
-    // URLRequest 객체 생성 (url 전달)
-    var request = URLRequest(url: URL(string: url)!)
-    // 메소드 지정
-    request.httpMethod = "GET"
-    // 헤더 정보 설정
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    
-    AF.request(request).responseDecodable(of:Cafe.self) { response in
-        switch response.result {
-        case .success:
-            print("호출 성공 getCafe")
-            
-            cafe = response.value ?? cafe
-            print(cafe)
-            
-        case .failure(_):
-            print(response.result)
-            print("호출 실패 getCafe")
-        }
-    }
-}
-
-func getCafe() -> Cafe {
-    
-    let url = host + "/cafe/get/" + String(user.userId)
-    
-    // URLRequest 객체 생성 (url 전달)
-    var request = URLRequest(url: URL(string: url)!)
-    // 메소드 지정
-    request.httpMethod = "GET"
-    // 헤더 정보 설정
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    
-    AF.request(request).responseDecodable(of:Cafe.self) { response in
-        switch response.result {
-        case .success:
-            print("호출 성공 getCafeWithReturn (새로고침)")
-            
-            cafe = response.value ?? cafe
-            print(cafe)
-            
-        case .failure(_):
-            print(response.result)
-            print("호출 실패 getCafeWithReturn (새로고침)")
-        }
-    }
-    
-    return cafe
-}
+//func getCafe() {
+//    let url = host + "/cafe/" + String(user.userId)
+//
+//    // URLRequest 객체 생성 (url 전달)
+//    var request = URLRequest(url: URL(string: url)!)
+//    // 메소드 지정
+//    request.httpMethod = "GET"
+//    // 헤더 정보 설정
+//    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//
+//    AF.request(request).responseDecodable(of:Cafe.self) { response in
+//        switch response.result {
+//        case .success:
+//            print("호출 성공 getCafe")
+//
+//            cafe = response.value ?? cafe
+//            print(cafe)
+//
+//        case .failure(_):
+//            print(response.result)
+//            print("호출 실패 getCafe")
+//        }
+//    }
+//}
+//
+//func getCafe() -> Cafe {
+//
+//    let url = host + "/cafe/get/" + String(user.userId)
+//
+//    // URLRequest 객체 생성 (url 전달)
+//    var request = URLRequest(url: URL(string: url)!)
+//    // 메소드 지정
+//    request.httpMethod = "GET"
+//    // 헤더 정보 설정
+//    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//
+//    AF.request(request).responseDecodable(of:Cafe.self) { response in
+//        switch response.result {
+//        case .success:
+//            print("호출 성공 getCafeWithReturn (새로고침)")
+//
+//            cafe = response.value ?? cafe
+//            print(cafe)
+//
+//        case .failure(_):
+//            print(response.result)
+//            print("호출 실패 getCafeWithReturn (새로고침)")
+//        }
+//    }
+//
+//    return cafe
+//}
 
 
 class CafeController: ObservableObject {
+    
+    // myCafe
+    @Published var cafe = Cafe()
     
     @Published var cafeInfo = Cafe()
     
@@ -216,6 +219,32 @@ class CafeController: ObservableObject {
             case .failure(_):
                 print(response.result)
                 print("호출 실패 getCafeList")
+            }
+        }
+        
+    }
+    
+    func getCafe() {
+        
+        let url = host + "/cafe/get/" + String(user.userId)
+        
+        // URLRequest 객체 생성 (url 전달)
+        var request = URLRequest(url: URL(string: url)!)
+        // 메소드 지정
+        request.httpMethod = "GET"
+        // 헤더 정보 설정
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        AF.request(request).responseDecodable(of:Cafe.self) { response in
+            switch response.result {
+            case .success(let value):
+                print("호출 성공 getMyCafe")
+                self.cafe = value
+                
+                
+            case .failure(_):
+                print(response.result)
+                print("호출 실패 getMyCafe")
             }
         }
         
