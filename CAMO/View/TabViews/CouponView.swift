@@ -30,34 +30,49 @@ struct CouponView: View {
             .padding(.leading, 30)
             .padding(.top, 30)
             .padding(.bottom, 0)
-        
             
-            VStack {
+            
+//            VStack {
+//
+//                CouponRow(CouponDTO(cafeId: "dd", cafeName: "qqqq", cafeAddress: "ddd", cafeReward: "dd", cafeRewardstamp: 10, couponUserstamp: 10))
+//
+//                List(couponController.couponList) { couponDTO in
+//                    CouponRow(couponDTO)
+//                }
+//                .listStyle(.plain)
+//                .padding(.top, 0).ignoresSafeArea()
+//                .padding(.bottom, 1)
+//                .padding(.horizontal, 0).ignoresSafeArea()
+//                .background(Color("bgMainColor"))
+//
+//
+//            }
+//            .padding(.top, 30)
+//            .background(Color("bgMainColor"))
+            
+            ScrollView {
                 
-                List(couponController.couponList) { couponDTO in
+                ForEach(couponController.couponList) { couponDTO in
                     CouponRow(couponDTO)
+                    
                 }
-                .listStyle(.plain)
-                .padding(.horizontal, 30)
-                .padding(.top, 0).ignoresSafeArea()
-                .padding(.bottom, 1)
-                .background(Color("bgMainColor"))
+                .padding(.top, 10)
                 
-                
-            }
-            .padding(.top, 30)
-            .background(Color("bgMainColor"))
+            } // scrollview
             
-
+            
         } // vstack
-//        .navigationTitle(Text("쿠폰").font(.system(size: 28)))
+        //        .navigationTitle(Text("쿠폰").font(.system(size: 28)))
         .navigationBarTitleDisplayMode(.inline)
         .background(Color("bgMainColor"))
         .onAppear() {
-            print("couponview 나타남")
-            print(couponController.couponList.count)
+            self.couponController.getCouponList()
+        }
+        .refreshable {
+            self.couponController.getCouponList()
         }
     }
+
     
 }
 
@@ -76,48 +91,62 @@ struct CouponRow: View {
     }
     
     var body: some View {
+        
         VStack {
+            
+            ZStack {
 
-            NavigationLink(destination: CafeInfoView(couponDTO.cafeId), isActive: $isActive) {
-                
-                HStack {
-                    VStack (alignment: .leading) {
-                        Text("\(couponDTO.cafeName)").font(.system(size: 16))
-                            .padding(.bottom, 10)
-                        Text("\(couponDTO.cafeAddress)").font(.system(size: 12))
-                            .foregroundColor(Color("grayTextColor"))
-                            .lineLimit(1)
-                            .padding(.bottom, 10)
-                        Label {
-                            // 쿠폰보상
-                            Text("아이스 아메리카노")
-                                .font(.system(size: 12))
-                                .lineLimit(1)
+                NavigationLink(destination: CafeInfoView(couponDTO.cafeId), isActive: $isActive) {
+                    EmptyView()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .opacity(0.0)
+                .buttonStyle(PlainButtonStyle())
+                VStack{
+                    Spacer(minLength: 0)
+                    HStack {
+                        VStack (alignment: .leading) {
+                            Text("\(couponDTO.cafeName)").font(.system(size: 16))
+                                .padding(.bottom, 10)
+                            Text("\(couponDTO.cafeAddress)").font(.system(size: 12))
                                 .foregroundColor(Color("grayTextColor"))
-                        } icon : {
-                            Image(systemName: "gift")
-                                .environment(\.symbolVariants, .none)
+                                .lineLimit(1)
+                                .padding(.bottom, 10)
+                            Label {
+                                // 쿠폰보상
+                                Text("아이스 아메리카노")
+                                    .font(.system(size: 12))
+                                    .lineLimit(1)
+                                    .foregroundColor(Color("grayTextColor"))
+                            } icon : {
+                                Image(systemName: "gift")
+                                    .environment(\.symbolVariants, .none)
+                                    .font(.system(size: 14))
+                                    .foregroundColor(Color("redPointColor"))
+                            }
+                        } // vstack
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 20)
+                        .padding(.vertical, 20)
+                        
+                        Spacer(minLength: 20)
+                        
+                        VStack {
+                            Text("\(couponDTO.couponUserstamp) / \(couponDTO.cafeRewardstamp)")
                                 .font(.system(size: 14))
-                                .foregroundColor(Color("redPointColor"))
                         }
-                    } // vstack
-                    .frame(maxWidth: .infinity)
-                    .padding(.leading, 20)
-                    .padding(.vertical, 20)
+                        .frame(maxWidth: 50, maxHeight: .infinity ,alignment: .trailing)
+                        .padding(.trailing, 20)
+                        
+                    } // hstack
                     
-                    Spacer()
+                }// vstack
+                .onTapGesture {
+                    isActive.toggle()
                     
-                    VStack {
-                        Text("\(couponDTO.couponUserstamp) / \(couponDTO.cafeRewardstamp)")
-                            .font(.system(size: 14))
-                    }
-                    .frame(maxWidth: 50, maxHeight: .infinity ,alignment: .trailing)
-                    .padding(.trailing, 20)
+                }
                 
-                } // hstack
-                    
-                    
-            } // navigationLink
+            } // zstack
             .frame(maxWidth: .infinity)
             .background(Color("bgColor"))
             .border(Color.black.opacity(0), width: 0)
@@ -131,6 +160,7 @@ struct CouponRow: View {
             } perform: {
             // 구현할 동작
             }
+        
 
             if (couponDTO.couponUserstamp >= couponDTO.cafeRewardstamp) {
                 VStack {
@@ -151,7 +181,7 @@ struct CouponRow: View {
                 
             }
                 
-        } // zstack
+        } // vstack
         .frame(maxWidth: .infinity)
         .background(Color("bgColor"))
         .border(Color.black.opacity(0), width: 0)
