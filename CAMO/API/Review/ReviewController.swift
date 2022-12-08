@@ -37,7 +37,7 @@ class ReviewController: ObservableObject {
             request.httpBody = encodedData
             print(encodedData)
         } catch {
-            print("error11111")
+            print("error")
         }
         
         AF.request(request).response{ response in

@@ -15,6 +15,8 @@ struct EditCafeView: View {
 
 struct CreateCafeView: View {
     
+    @ObservedObject var cafeController = CafeController()
+    
     @State var inputCafeName: String = ""
     @State var inputCafeAddress: String = ""
     @State var inputCafePhone: String = ""
@@ -69,7 +71,7 @@ struct CreateCafeView: View {
                 // 하나라도 빈칸이 있는 경우
                 textMsg = false
             } else {
-                cafeRegister(cafe: Cafe(cafeId: inputBusinessNum, cafeName: inputCafeName, cafeAddress: inputCafeAddress, cafePhone: inputCafePhone))
+                cafeController.cafeRegister(cafeRegi: Cafe(cafeId: inputBusinessNum, cafeName: inputCafeName, cafeAddress: inputCafeAddress, cafePhone: inputCafePhone))
                 self.isPresented = false
             }
         }, label: {
@@ -114,6 +116,8 @@ extension CreateCafeView {
 
 struct EditCafeInfoView: View {
     
+    @ObservedObject var cafeController = CafeController()
+    
     @State var inputCafeName: String = cafe.cafeName
     @State var inputCafeAddress: String = cafe.cafeAddress
     @State var inputCafePhone: String = cafe.cafePhone
@@ -133,6 +137,12 @@ struct EditCafeInfoView: View {
 //        isPresented = true
 //        UITextView.appearance().backgroundColor = .clear
 //    }
+    
+    init(isPresented: Binding<Bool>) {
+        self._isPresented = isPresented
+        cafeController.getCafe()
+//        print("editcafeview-> cafe: \(cafe)")
+    }
     
     
     var body: some View {
@@ -289,7 +299,7 @@ struct EditCafeInfoView: View {
                 // 하나라도 빈칸이 있는 경우
                 textMsg = false
             } else {
-                cafeUpdate(editCafeDTO: EditCafeDTO(cafeName: inputCafeName, cafeAddress: inputCafeAddress, cafePhone: inputCafeAddress, cafeIntroduce: inputCafeIntroduce, cafeReward: inputCouponReward, cafeRewardstamp: inputCouponTotal))
+                cafeController.cafeUpdate(editCafeDTO: EditCafeDTO(cafeName: inputCafeName, cafeAddress: inputCafeAddress, cafePhone: inputCafePhone, cafeIntroduce: inputCafeIntroduce, cafeReward: inputCouponReward, cafeRewardstamp: inputCouponTotal))
                 self.isPresented = false
             }
         }, label: {

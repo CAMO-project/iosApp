@@ -9,6 +9,8 @@ import SwiftUI
 
 struct JoinView: View {
     
+    @ObservedObject var userController = UserController()
+    
     @State private var inputName: String = ""
     @State private var inputEmail: String = ""
     @State private var inputPW: String = ""
@@ -73,7 +75,7 @@ struct JoinView: View {
                 if (inputPW == inputPWChk && inputPW != "") {
                     // 잘 입력된 경우
                     // 입력값을 서버로 보내고 화면 전환
-                    join(userJoin: User(email: inputEmail, name: inputName, password: inputPW, phone: inputPhone))
+                    userController.join(userJoin: User(email: inputEmail, name: inputName, password: inputPW, phone: inputPhone))
 //                    popAlert = true
                     isPresented = false
                     isJoined = true

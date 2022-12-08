@@ -16,17 +16,10 @@ struct CafeInfoView: View {
     @State private var isActiveWrite: Bool = false
     
     @State var reviewSettings: Bool = false
-    var avgRating: Float = 0
 
     init(_ cafeId: String) {
         cafeController.getCafeInfo(cafeId: cafeId)
         reviewController.getReivewList(cafeId: cafeId)
-    }
-    
-    init(_ cafeId: String, _ avgRating: Float) {
-        cafeController.getCafeInfo(cafeId: cafeId)
-        reviewController.getReivewList(cafeId: cafeId)
-        self.avgRating = avgRating
     }
     
     var body: some View {
@@ -67,7 +60,7 @@ struct CafeInfoView: View {
                     HStack {
                         Label {
                             // 쿠폰개수
-                            Text("스탬프 \(cafeController.cafeInfo.cafeRewardstamp)")
+                            Text("스탬프 \(cafeController.cafeInfo.couponUserstamp) / \(cafeController.cafeInfo.cafeRewardstamp)")
                                 .font(.system(size: 14))
                         } icon : {
                             Image(systemName: "heart.circle")
@@ -262,9 +255,9 @@ struct CafeInfoView: View {
                             .fontWeight(.bold)
                             .foregroundColor(Color("mainPointColor"))
                             .padding(.trailing, 10)
-                        StarsView(rating: avgRating)
+                        StarsView(rating: cafeController.cafeInfo.avgRating)
                             .padding(.trailing, 10)
-                        Text("\(avgRating)")
+                        Text("\(cafeController.cafeInfo.avgRating)")
                             .font(.system(size: 14))
                         Spacer()
                     }

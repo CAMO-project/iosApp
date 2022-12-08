@@ -92,7 +92,7 @@ struct CafeListRow: View {
     var body: some View {
         ZStack {
             if (isActive == true) {
-                NavigationLink(destination: CafeInfoView(cafeListDTO.cafeId, cafeListDTO.avgRating), isActive: $isActive) {
+                NavigationLink(destination: CafeInfoView(cafeListDTO.cafeId), isActive: $isActive) {
                     EmptyView()
                 } //navigationlink
                 .opacity(0.0)

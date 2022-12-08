@@ -10,6 +10,8 @@ import SwiftUI
 
 struct EditUserInfoView: View {
     
+    @ObservedObject var userController = UserController()
+    
     @Binding var isPresented: Bool
     
     @State var inputUserName: String = user.name
@@ -77,7 +79,7 @@ struct EditUserInfoView: View {
             } else if (inputPW != inputPWChk && inputPW != "") {
                 textWrongPW = false
             } else {
-                editUserInfo(editUserDTO: EditUserDTO(name: inputUserName, password: inputPW, phone: inputUserPhone))
+                userController.editUserInfo(editUserDTO: EditUserDTO(name: inputUserName, password: inputPW, phone: inputUserPhone))
                 self.isPresented = false
             }
         }, label: {

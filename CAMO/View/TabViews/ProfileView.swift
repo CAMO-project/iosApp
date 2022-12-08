@@ -11,6 +11,7 @@ import SwiftUI
 // MARK: ----ProfileView
 struct ProfileView: View {
     
+    @ObservedObject var userController = UserController()
     @ObservedObject var cafeController = CafeController()
     
     @State var editUserInfo: Bool = false
@@ -21,13 +22,16 @@ struct ProfileView: View {
     @State var editCafeInfo = false
     @State var editCafeMenu = false
     
-    @State var userInfo: User = getUser()
+//    @State var userInfo: User = getUser()
     
 //    var userInfo = User()
 //    var cafeInfo : Cafe = cafe
     
     init() {
-        cafeController.getCafe()
+        userController.getUser()
+        if (user.role == 1) {
+            cafeController.getCafe()
+        }
     }
     
     var body: some View {
@@ -75,7 +79,7 @@ struct ProfileView: View {
                                 .font(.system(size: 14))
 //                                .fontWeight(.bold)
                             Spacer()
-                            Text(userInfo.name)
+                            Text(userController.userData.name)
                                 .foregroundColor(Color("grayTextColor"))
                                 .font(.system(size: 14))
                         }
@@ -87,7 +91,7 @@ struct ProfileView: View {
                                 .font(.system(size: 14))
 //                                .fontWeight(.bold)
                             Spacer()
-                            Text(userInfo.email)
+                            Text(userController.userData.email)
                                 .foregroundColor(Color("grayTextColor"))
                                 .font(.system(size: 14))
                         }
@@ -99,7 +103,7 @@ struct ProfileView: View {
                                 .font(.system(size: 14))
 //                                .fontWeight(.bold)
                             Spacer()
-                            Text(userInfo.phone)
+                            Text(userController.userData.phone)
                                 .foregroundColor(Color("grayTextColor"))
                                 .font(.system(size: 14))
                         }
@@ -111,7 +115,7 @@ struct ProfileView: View {
                                 .font(.system(size: 14))
 //                                .fontWeight(.bold)
                             Spacer()
-                            if (userInfo.role == 1) {
+                            if (userController.userData.role == 1) {
                                 Text("카페 사장님")
                                     .foregroundColor(Color("grayTextColor"))
                                     .font(.system(size: 14))
@@ -179,9 +183,8 @@ struct ProfileView: View {
                     QRCodeImageView()
                 }
                 
-//                EditCafeRow(userRole: userInfo["회원"] ?? "일반 회원", cafeName: "")
                 VStack {
-                    if (userInfo.role == 0) {
+                    if (userController.userData.role == 0) {
                         VStack {
                             Text("카페 사장님이신가요?")
                                 .font(.system(size: 14))
@@ -201,7 +204,7 @@ struct ProfileView: View {
                             .cornerRadius(16)
                             .fullScreenCover(isPresented: $createCafe) {
                                 NavigationView {
-                                    CreateCafeView(isPresented: $createCafe)
+                                    CreateCafeView( isPresented: $createCafe)
                                     //                        .navigationBarHidden(false)
                                         .navigationBarBackButtonHidden(false)
                                 }
@@ -212,9 +215,9 @@ struct ProfileView: View {
                         }
                         .padding(.horizontal, 30)
                         
-                    } else if (userInfo.role == 1) {
+                    } else if (userController.userData.role == 1) {
                         VStack {
-                            Text("카페 \(cafeController.cafe.cafeName)")
+                            Text("카페 \(cafeController.myCafe.cafeName)")
                                 .font(.system(size: 18))
                                 .foregroundColor(Color("mainPointColor"))
                                 .padding(.bottom, 10)
@@ -331,8 +334,8 @@ struct ProfileView: View {
             } // scrollview
             
             
-            
-            if (userInfo.role == 1) {
+
+            if (userController.userData.role == 1) {
                 
                 ZStack {
                     
@@ -361,10 +364,15 @@ struct ProfileView: View {
         } // vstack
         .background(Color("bgMainColor"))
         .refreshable {
-            userInfo = getUser()
-            print("새로고침: \(userInfo)")
+            self.userController.getUser()
+            print("새로고침 : \(user)")
+            if (user.role == 1) {
+                self.cafeController.getCafe()
+            }
         }
-        
+//        .onAppear() {
+//            print("profile -> userid: \(user.userId), \(user.email)")
+//        }
     }
     
 }

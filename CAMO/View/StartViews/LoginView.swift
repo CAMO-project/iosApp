@@ -11,6 +11,8 @@ import Alamofire
 
 struct LoginView: View {
     
+    @ObservedObject var userController = UserController()
+    
     // id == 이메일
     @State private var inputUserID: String = ""
     @State private var inputUserPW: String = ""
@@ -49,31 +51,21 @@ struct LoginView: View {
             
             Button {
                 if (inputUserID != "" && inputUserPW != "") {
-                    isLogined = login(loginDTO: LoginDTO(email: inputUserID, password: inputUserPW))
-                    print("버튼 클릭 \(isLogined)")
-//                    isLogined = true
-                    
-                    if (isLogined == true) {
-                        isPresented = false
-                    } else {
-                        wrongInput = true
+                    userController.login(loginDTO: LoginDTO(email: inputUserID, password: inputUserPW))
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.7) {
+                      // 0.5초 후 실행될 부분
+                        user = userController.userData
+                        isLogined = userController.returnIsLogin
+                        isPresented = userController.returnIsPresented
+                        print("isLogined: \(isLogined), isPresented: \(isPresented) <= (true, false)가 로그인 성공")
+                        if (userController.returnIsLogin == false) {
+                            wrongInput = true
+                        }
                     }
+                    
                 } else {
                     wrongInput = true
                 }
-                
-//                if (inputUserID == "1234" && inputUserPW == "1234") {
-//                    // 값이 일치하는 경우
-////                    popAlert = true
-////                    successLogin = true
-//                    isLogined = true
-////                    NavigationLink("", destination: MainView())
-////                        .navigationBarHidden(false)
-////                        .navigationBarBackButtonHidden(true)
-//                    isPresented = false
-//                } else {
-//                    wrongInput = true
-//                }
             } label: {
                 Text("로그인")
                     .font(.system(size: 16))
