@@ -68,6 +68,9 @@ struct CafeListView: View {
         .navigationBarTitleDisplayMode(.inline)
 //        .navigationTitle(Text("카페 리스트").font(.system(size: 28)))
         .background(Color("bgMainColor"))
+        .refreshable {
+            self.cafeController.getCafeList()
+        }
         
     }
 }
@@ -121,9 +124,6 @@ struct CafeListRow: View {
         }
         .background(Color("bgMainColor"))
         .listRowBackground(Color("bgMainColor"))
-        .onAppear() {
-//            print(cafeListDTO.cafeName)
-        }
         .onTapGesture {
             isActive.toggle()
         }

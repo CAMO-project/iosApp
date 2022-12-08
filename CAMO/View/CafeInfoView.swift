@@ -10,6 +10,7 @@ import SwiftUI
 struct CafeInfoView: View {
     
     @ObservedObject var cafeController = CafeController()
+    @ObservedObject var menuController = MenuController()
     @ObservedObject var reviewController = ReviewController()
     
     @State private var isActiveMenu: Bool = false
@@ -19,6 +20,7 @@ struct CafeInfoView: View {
 
     init(_ cafeId: String) {
         cafeController.getCafeInfo(cafeId: cafeId)
+        menuController.getMenuList(cafeId: cafeId)
         reviewController.getReivewList(cafeId: cafeId)
     }
     
@@ -114,7 +116,7 @@ struct CafeInfoView: View {
         
             // 대표 메뉴
             
-            NavigationLink(destination: menuListView(cafeId: cafeController.cafeInfo.cafeId), isActive: $isActiveMenu) {
+            NavigationLink(destination: menuListView(cafeController.cafeInfo.cafeId), isActive: $isActiveMenu) {
                 VStack {  // menu box
                     ZStack {
                         Text("대표 메뉴")
@@ -134,48 +136,55 @@ struct CafeInfoView: View {
                     }
                     .padding(20)
                     
-                    HStack {
-                        VStack {
-                            Image("testImage2")
-            //                    .renderingMode(.original)
-                                .resizable()
-                                .aspectRatio(1.0, contentMode: .fit)
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
-                                .clipped() //프레임을 벗어나는 이미지 제거
-                            
-                            Text("아이스 아메리카노")
-                                .font(.system(size: 14))
-                                .lineLimit(1)
-                                .padding(.top, 10)
-                                .padding(.bottom, 1).ignoresSafeArea()
-                            Text("2500원")
-                                .font(.system(size: 12))
-                                .foregroundColor(Color("grayTextColor"))
-                        }
-                        .padding(.trailing, 5)
-                        VStack {
-                            Image("testImage3")
-            //                    .renderingMode(.original)
-                                .resizable()
-                                .aspectRatio(1.0, contentMode: .fit)
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
-                                .clipped() //프레임을 벗어나는 이미지 제거
-                            
-                            Text("아이스 아메리카노")
-                                .font(.system(size: 14))
-                                .lineLimit(1)
-                                .padding(.top, 10)
-                                .padding(.bottom, 1).ignoresSafeArea()
-                            Text("2500원")
-                                .font(.system(size: 12))
-                                .foregroundColor(Color("grayTextColor"))
-                        }
-                        .padding(.leading, 5)
-                    } // hstack
+//                    HStack {
+//                        VStack {
+//                            Image("testImage2")
+//            //                    .renderingMode(.original)
+//                                .resizable()
+//                                .aspectRatio(1.0, contentMode: .fit)
+//                                .clipShape(RoundedRectangle(cornerRadius: 20))
+//                                .clipped() //프레임을 벗어나는 이미지 제거
+//
+//                            Text("아이스 아메리카노")
+//                                .font(.system(size: 14))
+//                                .lineLimit(1)
+//                                .padding(.top, 10)
+//                                .padding(.bottom, 1).ignoresSafeArea()
+//                            Text("2500원")
+//                                .font(.system(size: 12))
+//                                .foregroundColor(Color("grayTextColor"))
+//                        }
+//                        .padding(.trailing, 5)
+//                        VStack {
+//                            Image("testImage3")
+//            //                    .renderingMode(.original)
+//                                .resizable()
+//                                .aspectRatio(1.0, contentMode: .fit)
+//                                .clipShape(RoundedRectangle(cornerRadius: 20))
+//                                .clipped() //프레임을 벗어나는 이미지 제거
+//
+//                            Text("아이스 아메리카노")
+//                                .font(.system(size: 14))
+//                                .lineLimit(1)
+//                                .padding(.top, 10)
+//                                .padding(.bottom, 1).ignoresSafeArea()
+//                            Text("2500원")
+//                                .font(.system(size: 12))
+//                                .foregroundColor(Color("grayTextColor"))
+//                        }
+//                        .padding(.leading, 5)
+//                    } // hstack
+//                    .padding(.horizontal, 20)
+//                    .padding(.top, 0).ignoresSafeArea()
+//                    .padding(.bottom, 20)
+                    
+                    VStack {
+                        Text("메뉴 2개만 반환해쥬,,")
+                            .foregroundColor(Color("textColor"))
+                    }
                     .padding(.horizontal, 20)
                     .padding(.top, 0).ignoresSafeArea()
                     .padding(.bottom, 20)
-                    
                     
                 } // vstack
                 
@@ -359,14 +368,57 @@ struct ReviewListRow: View {
 // CafeInfoView -> 메뉴 더보기 뷰
 struct menuListView: View {
     
-    var cafeId : String
+    @ObservedObject var menuController = MenuController()
+    
+    init(_ cafeId: String) {
+        menuController.getMenuList(cafeId: cafeId)
+    }
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-        Text("\(cafeId)")
+        
+        VStack {
+            List(menuController.menuList) { menuListDTO in
+                MenuListRow(menuListDTO)
+            }
+            .listStyle(.plain)
+            .padding(.horizontal, 30)
+            .padding(.bottom, 1)
+            .background(Color("bgMainColor"))
+            
+        }
+        .navigationTitle("전체 메뉴")
+        .navigationBarTitleDisplayMode(.inline)
+        .background(Color("bgMainColor"))
+        
+        
     }
 }
 
+
+struct MenuListRow: View {
+    
+    var menuListDTO: MenuListDTO
+    
+    init(_ menuListDTO: MenuListDTO) {
+        self.menuListDTO = menuListDTO
+    }
+    
+    var body: some View {
+        HStack {
+            Text(menuListDTO.menuName)
+                .font(.system(size: 16))
+            Spacer()
+            Text("\(menuListDTO.menuPrice) 원")
+                .font(.system(size: 16))
+                .foregroundColor(Color("grayTextColor"))
+            
+        }
+        .padding(.vertical, 20)
+        .background(Color("bgMainColor"))
+        .listRowBackground(Color("bgMainColor"))
+    }
+    
+}
 
 
 //fileprivate struct SaveBtn: View {

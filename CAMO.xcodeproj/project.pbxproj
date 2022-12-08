@@ -23,6 +23,8 @@
 		F20293D02941012800642839 /* QRCameraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293CF2941012800642839 /* QRCameraCell.swift */; };
 		F20293D42941D1DD00642839 /* CafeInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293D32941D1DC00642839 /* CafeInfoDTO.swift */; };
 		F20293D62941DEC100642839 /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293D52941DEC100642839 /* ImageController.swift */; };
+		F20293D92942400E00642839 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293D82942400E00642839 /* MenuController.swift */; };
+		F20293DB2942402300642839 /* MenuListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293DA2942402300642839 /* MenuListDTO.swift */; };
 		F23186192918969C0035E01B /* CAMOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23186182918969C0035E01B /* CAMOApp.swift */; };
 		F231861B2918969C0035E01B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F231861A2918969C0035E01B /* ContentView.swift */; };
 		F231861D2918969E0035E01B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F231861C2918969E0035E01B /* Assets.xcassets */; };
@@ -81,6 +83,8 @@
 		F20293CF2941012800642839 /* QRCameraCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCameraCell.swift; sourceTree = "<group>"; };
 		F20293D32941D1DC00642839 /* CafeInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeInfoDTO.swift; sourceTree = "<group>"; };
 		F20293D52941DEC100642839 /* ImageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
+		F20293D82942400E00642839 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		F20293DA2942402300642839 /* MenuListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuListDTO.swift; sourceTree = "<group>"; };
 		F23186152918969C0035E01B /* CAMO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CAMO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F23186182918969C0035E01B /* CAMOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAMOApp.swift; sourceTree = "<group>"; };
 		F231861A2918969C0035E01B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -209,6 +213,14 @@
 			path = QRCode;
 			sourceTree = "<group>";
 		};
+		F20293D72942363F00642839 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				F20293D82942400E00642839 /* MenuController.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
 		F231860C2918969C0035E01B = {
 			isa = PBXGroup;
 			children = (
@@ -291,6 +303,7 @@
 				F20293B9293B7C4B00642839 /* ReviewListDTO.swift */,
 				F20293BE293E52F200642839 /* CouponDTO.swift */,
 				F20293D32941D1DC00642839 /* CafeInfoDTO.swift */,
+				F20293DA2942402300642839 /* MenuListDTO.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -299,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				F20293C82940B9CB00642839 /* permissions.swift */,
+				F20293D72942363F00642839 /* Menu */,
 				F20293BB293E52CF00642839 /* Coupon */,
 				F20293B3293B787500642839 /* Review */,
 				F2C834A529288DC0000FD0DC /* Cafe */,
@@ -472,11 +486,13 @@
 				F20293B22939244900642839 /* EditUserInfoView.swift in Sources */,
 				F20293D62941DEC100642839 /* ImageController.swift in Sources */,
 				F2913039291A9C0700A58087 /* MainView.swift in Sources */,
+				F20293D92942400E00642839 /* MenuController.swift in Sources */,
 				F2A05BFC29288C3D00BB53DD /* LoginDTO.swift in Sources */,
 				F231864E2918BAE10035E01B /* StartView.swift in Sources */,
 				F2C834AB292A1A57000FD0DC /* CafeController.swift in Sources */,
 				F20293BF293E52F200642839 /* CouponDTO.swift in Sources */,
 				F231864629189D500035E01B /* LoginView.swift in Sources */,
+				F20293DB2942402300642839 /* MenuListDTO.swift in Sources */,
 				F231861B2918969C0035E01B /* ContentView.swift in Sources */,
 				F2C834A729288DF4000FD0DC /* UserController.swift in Sources */,
 				F2C834AD292A1AA6000FD0DC /* Cafe.swift in Sources */,
