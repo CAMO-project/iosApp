@@ -25,6 +25,7 @@
 		F20293D62941DEC100642839 /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293D52941DEC100642839 /* ImageController.swift */; };
 		F20293D92942400E00642839 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293D82942400E00642839 /* MenuController.swift */; };
 		F20293DB2942402300642839 /* MenuListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20293DA2942402300642839 /* MenuListDTO.swift */; };
+		F20294342943B31800642839 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20294332943B31800642839 /* Menu.swift */; };
 		F23186192918969C0035E01B /* CAMOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23186182918969C0035E01B /* CAMOApp.swift */; };
 		F231861B2918969C0035E01B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F231861A2918969C0035E01B /* ContentView.swift */; };
 		F231861D2918969E0035E01B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F231861C2918969E0035E01B /* Assets.xcassets */; };
@@ -85,6 +86,7 @@
 		F20293D52941DEC100642839 /* ImageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
 		F20293D82942400E00642839 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		F20293DA2942402300642839 /* MenuListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuListDTO.swift; sourceTree = "<group>"; };
+		F20294332943B31800642839 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		F23186152918969C0035E01B /* CAMO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CAMO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F23186182918969C0035E01B /* CAMOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAMOApp.swift; sourceTree = "<group>"; };
 		F231861A2918969C0035E01B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				F2C834A82928923C000FD0DC /* User.swift */,
 				F2C834AC292A1AA6000FD0DC /* Cafe.swift */,
 				F20293B7293B78D900642839 /* Review.swift */,
+				F20294332943B31800642839 /* Menu.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -508,6 +511,7 @@
 				F20293B8293B78D900642839 /* Review.swift in Sources */,
 				F23186192918969C0035E01B /* CAMOApp.swift in Sources */,
 				F20293BA293B7C4B00642839 /* ReviewListDTO.swift in Sources */,
+				F20294342943B31800642839 /* Menu.swift in Sources */,
 				F20293AD293923AE00642839 /* ProfileView.swift in Sources */,
 				F2C834B42937297C000FD0DC /* CafeListDTO.swift in Sources */,
 				F231865229192B1F0035E01B /* UnderlineTextFieldView.swift in Sources */,
