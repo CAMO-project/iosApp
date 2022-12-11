@@ -42,7 +42,7 @@ struct LoginView: View {
             VStack {
                 
                 if (wrongInput) {
-                    Text("아이디나 비밀번호가 일치하지 않습니다" + inputUserID + inputUserPW)
+                    Text("아이디나 비밀번호가 일치하지 않습니다")
                         .font(.system(size: 14))
                         .foregroundColor(Color("redPointColor"))
                 }
@@ -57,7 +57,6 @@ struct LoginView: View {
                         user = userController.userData
                         isLogined = userController.returnIsLogin
                         isPresented = userController.returnIsPresented
-                        print("isLogined: \(isLogined), isPresented: \(isPresented) <= (true, false)가 로그인 성공")
                         if (userController.returnIsLogin == false) {
                             wrongInput = true
                         }

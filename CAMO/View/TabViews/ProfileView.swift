@@ -15,8 +15,19 @@ struct ProfileView: View {
     @ObservedObject var cafeController = CafeController()
     
     @State var editUserInfo: Bool = false
+    @State private var myReviewListPop: Bool = false
     @State private var popQrAlert: Bool  = false
     @State private var qrScanSettings: Bool = false
+    
+    @State private var deleteCafeAlert: Bool = false
+    @State private var deleteUserAlert: Bool = false
+    
+    @State private var inputPasswordForDelCafe: String = ""
+    @State private var wrongInputCafe: Bool = false
+    
+    @State private var inputPasswordForDelUser: String = ""
+    @State private var wrongInputUser: Bool = false
+    
     
     @State var createCafe = false
     @State var editCafeInfo = false
@@ -37,13 +48,29 @@ struct ProfileView: View {
     var body: some View {
         VStack {
             
-            VStack {
+            HStack {
                 Text("My 페이지")
                     .font(.system(size: 32))
                     .fontWeight(.black)
+                Spacer()
+                HStack {
+                    Image(systemName: "list.star")
+                        .environment(\.symbolVariants, .none)
+                        .font(.system(size: 28))
+                        .foregroundColor(Color(UIColor.systemBlue))
+                }
+                .onTapGesture {
+                    myReviewListPop = true
+                }
+                .fullScreenCover(isPresented: $myReviewListPop) {
+                    NavigationView {
+                        MyReviewListView(isPresented: $myReviewListPop)
+                            .navigationBarBackButtonHidden(false)
+                    }
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.leading, 30)
+            .padding(.horizontal, 30)
             .padding(.top, 30)
             .padding(.bottom, 0)
             
@@ -295,10 +322,44 @@ struct ProfileView: View {
                                 
                                 
                                 
-                            }
+                            } // hstack
                             .padding(.horizontal, 20)
-                            .padding(.bottom, 20)
+                            .padding(.bottom, 10)
                             
+                            Divider().padding(.horizontal, 20)
+                                .padding(.bottom, 10)
+                            Button {
+                                deleteCafeAlert.toggle()
+                            } label: {
+                                Text("카페 폐쇄")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(Color("redPointColor"))
+                                    .padding(.bottom, 20)
+                            }
+                            .alert("카페 폐쇄", isPresented: $deleteCafeAlert, actions: {
+
+                                TextField("비밀번호", text: $inputPasswordForDelCafe)
+                                    .font(.system(size: 16))
+                                
+                                Button("폐쇄", role: .destructive, action: {
+                                    if (inputPasswordForDelCafe != "") {
+                                        cafeController.deleteCafe(cafeDel: CafeDeleteDTO(cafeId: cafe.cafeId, userPassword: inputPasswordForDelCafe))
+                                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.7) {
+                                            user = cafeController.userData
+                                            if (cafeController.returnIsDeleted == false) {
+                                                wrongInputCafe = true
+                                            }
+                                        }
+                                    }
+                                })
+                                Button("취소", role: .cancel, action: {})
+                            }, message: {
+                                if (wrongInputCafe == true) {
+                                    Text("정말 카페를 폐쇄하시겠습니까? (입력 오류)")
+                                } else {
+                                    Text("정말 카페를 폐쇄하시겠습니까?")
+                                }
+                            })
                             
                         }
                         .frame(maxWidth: .infinity)
@@ -323,16 +384,49 @@ struct ProfileView: View {
                     Divider()
                     
                     Button {
+                        deleteUserAlert.toggle()
                     } label: {
                         Text("회원탈퇴")
                             .font(.system(size: 14))
                             .foregroundColor(Color("grayTextColor"))
-                            .onTapGesture {
-                                deleteUser()
-                                StartView()
-                            }
+//                            .onTapGesture {
+//                                deleteUser()
+//                                UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                                    exit(0)
+//                                }
+//                            }
                     }
                     .frame(maxWidth: .infinity)
+                    .alert("회원탈퇴", isPresented: $deleteUserAlert, actions: {
+
+                        TextField("비밀번호", text: $inputPasswordForDelUser)
+                            .font(.system(size: 16))
+                        
+                        Button("탈퇴", role: .destructive, action: {
+                            if (inputPasswordForDelUser != "") {
+                                userController.deleteUser(userDel: UserDeleteDTO(userId: user.userId, password: inputPasswordForDelUser))
+                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.7) {
+                                    user = cafeController.userData
+                                    if (cafeController.returnIsDeleted == false) {
+                                        wrongInputUser = true
+                                    } else {
+                                        UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                            exit(0)
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                        Button("취소", role: .cancel, action: {})
+                    }, message: {
+                        if (wrongInputUser == true) {
+                            Text("정말 탈퇴하시겠습니까? (입력 오류)")
+                        } else {
+                            Text("정말 탈퇴하시겠습니까?")
+                        }
+                    })
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.top, 60)

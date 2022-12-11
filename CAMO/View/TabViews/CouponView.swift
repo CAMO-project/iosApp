@@ -33,11 +33,19 @@ struct CouponView: View {
             
             ScrollView {
                 
-                ForEach(couponController.couponList) { couponDTO in
-                    CouponRow(couponDTO)
+                if (couponController.couponList.count == 0) {
+                    Text("아직 쿠폰이 없습니다.")
+                        .foregroundColor(Color("grayTextColor"))
+                        .frame(maxWidth: .infinity)
+                        .padding(30)
+                    Spacer()
+                } else {
+                    ForEach(couponController.couponList) { couponDTO in
+                        CouponRow(couponDTO)
 
+                    }
+                    .padding(.top, 10)
                 }
-                .padding(.top, 10)
                 
             } // scrollview
             
@@ -123,7 +131,6 @@ struct CouponRow: View {
                 }// vstack
                 .onTapGesture {
                     isActive.toggle()
-                    
                 }
                 
             } // zstack

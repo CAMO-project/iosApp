@@ -42,6 +42,13 @@ struct CafeListView: View {
                     .foregroundColor(Color("mainPointColor"))
                     .padding(.trailing, 20)
                     .padding(.vertical, 10)
+                    .onTapGesture {
+                        if inputSearch != "" {
+                            cafeController.searchCafeList(inputSearch)
+                        } else {
+                            cafeController.getCafeList()
+                        }
+                    }
             } // hstack
             .frame(maxWidth: .infinity)
             .background(Color("bgColor"))
@@ -52,16 +59,26 @@ struct CafeListView: View {
 
             
             
-            List(cafeController.cafeList) { cafeListDTO in
-                
-                CafeListRow(cafeListDTO)
-                
+            if cafeController.cafeList.count == 0 {
+                Text("해당하는 검색 결과가 없습니다")
+                    .foregroundColor(Color("grayTextColor"))
+                    .frame(maxWidth: .infinity)
+                    .padding(30)
+                Spacer()
+            } else {
+                List(cafeController.cafeList) { cafeListDTO in
+                    
+                    CafeListRow(cafeListDTO)
+                    
+                }
+                .listStyle(.plain)
+                .padding(.horizontal, 30)
+                .padding(.top, 0).ignoresSafeArea()
+                .padding(.bottom, 1)
+                .background(Color("bgMainColor"))
             }
-            .listStyle(.plain)
-            .padding(.horizontal, 30)
-            .padding(.top, 0).ignoresSafeArea()
-            .padding(.bottom, 1)
-            .background(Color("bgMainColor"))
+            
+            
             
             
         } // vstack
@@ -112,7 +129,7 @@ struct CafeListRow: View {
                             .environment(\.symbolVariants, .none)
                             .font(.system(size: 14))
                             .foregroundColor(.yellow)
-                        Text("\(cafeListDTO.avgRating)")
+                        Text("\(round(cafeListDTO.avgRating*10)/10)")
                             .font(.system(size: 14))
                     } // hstack
                 } // hstack

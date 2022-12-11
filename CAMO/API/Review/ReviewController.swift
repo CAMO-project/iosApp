@@ -14,6 +14,8 @@ class ReviewController: ObservableObject {
 
     @Published var reviewList = [ReviewListDTO]()
     
+    @Published var myReviewList = [MyReviewListDTO]()
+    
     func writeReview(_ review: Review){
         
         let url = host + "/review/"
@@ -74,6 +76,55 @@ class ReviewController: ObservableObject {
             case .failure(_):
                 print(response.result)
                 print("호출 실패 getReivewList")
+            }
+        }
+    }
+    
+    func getMyReviewList() {
+        
+        let url = host + "/review/user/" + String(user.userId)
+        
+        // URLRequest 객체 생성 (url 전달)
+        var request = URLRequest(url: URL(string: url)!)
+        // 메소드 지정
+        request.httpMethod = "GET"
+        // 헤더 정보 설정
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        AF.request(request).responseDecodable(of: [MyReviewListDTO].self) { response in
+            print("alamofire 실행~~")
+
+            switch response.result {
+            case .success(let value):
+                print("호출 성공 getReivewList")
+                self.myReviewList = value
+                
+            case .failure(_):
+                print(response.result)
+                print("호출 실패 getReivewList")
+            }
+        }
+        
+    }
+    
+    func reviewDelete(reviewDel: MyReviewListDTO) {
+        let url = host + "/review/" + String(reviewDel.reviewId)
+        
+        // URLRequest 객체 생성 (url 전달)
+        var request = URLRequest(url: URL(string: url)!)
+        // 메소드 지정
+        request.httpMethod = "DELETE"
+        // 헤더 정보 설정
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        AF.request(request).response { response in
+            switch response.result {
+            case .success:
+                print("호출 성공 reviewDelete")
+                
+            case .failure(_):
+                print(response.result)
+                print("호출 실패 reviewDelete")
             }
         }
     }

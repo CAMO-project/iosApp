@@ -18,7 +18,6 @@ struct EditMenuView: View {
     @Binding var isPresented: Bool
     
     @State var popAddMenuAlert: Bool = false
-    @State var popDelMenuAlert: Bool = false
     
     init(isPresented: Binding<Bool>) {
         self._isPresented = isPresented
@@ -41,6 +40,7 @@ struct EditMenuView: View {
             }
             .listStyle(.plain)
             .padding(.bottom, 1)
+            .padding(.horizontal, 30)
             .background(Color("bgMainColor"))
             
         } // vstack

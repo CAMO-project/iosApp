@@ -21,6 +21,9 @@ class CafeController: ObservableObject {
     
     @Published var userData = User()
     
+    // 카페 폐쇄
+    @Published var returnIsDeleted = false
+    
     func getCafeInfo(cafeId: String) {
 //        /cafe/{cafeId}?userId={userId}
         let url = host + "/cafe/" + cafeId + "?userId=" + String(user.userId)
@@ -72,6 +75,33 @@ class CafeController: ObservableObject {
             }
         }
         
+    }
+    
+    
+    func searchCafeList(_ search: String) {
+        let url = host + "/cafe/name/" + search
+        print(search)
+        
+        // URLRequest 객체 생성 (url 전달)
+//        var request = URLRequest(url: URL(string: url)!)
+        // 메소드 지정
+//        request.httpMethod = "GET"
+        // 헤더 정보 설정
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        AF.request((host + "/cafe/name/" + search).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "").responseDecodable(of: [CafeListDTO].self) { response in
+            print("alamofire 실행~~")
+
+            switch response.result {
+            case .success(let value):
+                print("호출 성공 getCafeList")
+                self.cafeList = value
+                
+            case .failure(_):
+                print(response.result)
+                print("호출 실패 getCafeList")
+            }
+        }
     }
     
     func getCafe() {
@@ -179,4 +209,48 @@ class CafeController: ObservableObject {
             }
         }
     }
+    
+    // login
+    func deleteCafe(cafeDel: CafeDeleteDTO) {
+        let url = host + "/cafe"
+        
+        // URLRequest 객체 생성 (url 전달)
+        var request = URLRequest(url: URL(string: url)!)
+        // 메소드 지정
+        request.httpMethod = "DELETE"
+        // 헤더 정보 설정
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // json 인코더 생성
+        let encoder = JSONEncoder()
+        
+        // json 출력 시 예쁘게 출력
+        encoder.outputFormatting = .prettyPrinted
+        
+        do {
+            // json 객체로 변환
+            let encodedData = try encoder.encode(cafeDel)
+            // Request Body에 json 추가
+            request.httpBody = encodedData
+            
+        } catch {
+            print("error")
+        }
+        
+        AF.request(request).responseDecodable(of:User.self) { response in
+            switch response.result {
+            case .success(let value):
+                print("카페 폐쇄 성공")
+                self.userData = value
+                user = value
+                self.returnIsDeleted = true
+                
+            case .failure(_):
+                print(response.result)
+                print("카페 폐쇄 실패")
+                self.returnIsDeleted = false
+            }
+        }
+    }
+    
 }
