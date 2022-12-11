@@ -47,7 +47,7 @@ class UserController: ObservableObject {
     
     // login
     func login(loginDTO: LoginDTO) {
-        let url = host + "/user/login/"
+        let url = host + "/user/login"
         
         // URLRequest 객체 생성 (url 전달)
         var request = URLRequest(url: URL(string: url)!)

@@ -102,4 +102,26 @@ class MenuController: ObservableObject {
         }
         
     }
+    
+    func menuDelete(menuDel: MenuListDTO) {
+        let url = host + "/menu/" + String(menuDel.menuId)
+        
+        // URLRequest 객체 생성 (url 전달)
+        var request = URLRequest(url: URL(string: url)!)
+        // 메소드 지정
+        request.httpMethod = "DELETE"
+        // 헤더 정보 설정
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        AF.request(request).response { response in
+            switch response.result {
+            case .success:
+                print("호출 성공 menuDelete")
+                
+            case .failure(_):
+                print(response.result)
+                print("호출 실패 menuDelete")
+            }
+        }
+    }
 }

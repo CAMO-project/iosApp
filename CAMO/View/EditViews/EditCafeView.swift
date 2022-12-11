@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-struct EditCafeView: View {
-    var body: some View {
-        Text("EditCafe")
-    }
-}
-
 struct CreateCafeView: View {
     
     @ObservedObject var cafeController = CafeController()
@@ -117,6 +111,7 @@ extension CreateCafeView {
 struct EditCafeInfoView: View {
     
     @ObservedObject var cafeController = CafeController()
+    @ObservedObject var imageController = ImageController()
     
     @State var inputCafeName: String = cafe.cafeName
     @State var inputCafeAddress: String = cafe.cafeAddress
@@ -125,7 +120,6 @@ struct EditCafeInfoView: View {
     @State var inputCouponReward: String = cafe.cafeReward
     @State var inputCafeIntroduce: String = cafe.cafeIntroduce
     
-    
     @State private var textMsg = true
     @State private var textWrongPW = true
     
@@ -133,30 +127,77 @@ struct EditCafeInfoView: View {
     
     @Binding var isPresented: Bool
     
-//    init() {
-//        isPresented = true
-//        UITextView.appearance().backgroundColor = .clear
-//    }
+    @State var showImagePicker: Bool = false
+    @State var image: Image? = nil
     
     init(isPresented: Binding<Bool>) {
         self._isPresented = isPresented
         cafeController.getCafe()
-//        print("editcafeview-> cafe: \(cafe)")
     }
-    
-    
+
     var body: some View {
         
         ScrollView {
-            
-            Image("testImage1")
-//                    .renderingMode(.original)
-                .resizable()
-                .aspectRatio(1.0, contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .clipped() //프레임을 벗어나는 이미지 제거
-                .padding(.bottom, 20)
-                .padding(.horizontal, 30)
+            VStack {
+                if (image == nil) {
+                    ZStack{
+                        VStack {
+                            Spacer()
+                            Image(systemName: "camera")
+                                .environment(\.symbolVariants, .none)
+                                .font(.system(size: 24))
+                                .foregroundColor(Color("mainPointColor"))
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .aspectRatio(1.0, contentMode: .fill)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20).fill()
+                                .foregroundColor(Color("graybgColor"))
+                        )
+                        VStack {
+                            Spacer()
+                            Button(action: {
+                                self.showImagePicker.toggle()
+                            }) {
+                                Image(systemName: "camera")
+                                    .environment(\.symbolVariants, .none)
+                                    .font(.system(size: 24))
+                                    .foregroundColor(Color("mainPointColor"))
+                            }
+                            Spacer()
+                        }
+                    }
+                } else {
+                    image?
+                        .resizable()
+                        .aspectRatio(1.0, contentMode: .fill)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .clipped() //프레임을 벗어나는 이미지 제거
+                        .padding(.bottom, 20)
+                        .padding(.horizontal, 30)
+                    Button(action: {
+                        self.showImagePicker.toggle()
+                    }) {
+                        Text("카페 사진 업로드하기 (1:1 비율만 업로드)")
+                    }
+                }
+            }
+            .padding(30)
+            .sheet(isPresented: $showImagePicker) {
+                ImagePicker(sourceType: .photoLibrary) { image in
+                    self.image = Image(uiImage: image)
+                }
+            }
+//
+//            Image("testImage1")
+////                    .renderingMode(.original)
+//                .resizable()
+//                .aspectRatio(1.0, contentMode: .fit)
+//                .clipShape(RoundedRectangle(cornerRadius: 20))
+//                .clipped() //프레임을 벗어나는 이미지 제거
+//                .padding(.bottom, 20)
+//                .padding(.horizontal, 30)
             
             VStack(alignment: .leading) {
                 Label {

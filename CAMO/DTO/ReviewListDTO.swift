@@ -14,7 +14,6 @@ struct ReviewListDTO : Codable, Identifiable {
     var reviewRating: Int
     var reviewContent: String
     var reviewDate: String
-    var userId: Int
     var cafeId: String
     
     let id = UUID()

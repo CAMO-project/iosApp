@@ -58,6 +58,7 @@ struct ProfileView: View {
                         HStack {
                             Spacer()
                             Image(systemName: "square.and.pencil")
+                                .environment(\.symbolVariants, .none)
                                 .font(.system(size: 20))
                                 .foregroundColor(Color(UIColor.systemBlue))
                                 .onTapGesture {
@@ -285,6 +286,12 @@ struct ProfileView: View {
                                     
                                 }
                                 .padding(.leading, 10)
+                                .fullScreenCover(isPresented: $editCafeMenu) {
+                                    NavigationView {
+                                        EditMenuView(isPresented: $editCafeMenu)
+                                            .navigationBarBackButtonHidden(false)
+                                    }
+                                }
                                 
                                 
                                 

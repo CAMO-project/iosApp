@@ -35,7 +35,7 @@ struct CouponView: View {
                 
                 ForEach(couponController.couponList) { couponDTO in
                     CouponRow(couponDTO)
-                    
+
                 }
                 .padding(.top, 10)
                 
