@@ -54,6 +54,7 @@ struct JoinView: View {
                         }
 
                         Button(action: {
+                            print("true가 사용가능: \(self.userController.returnChkEmail)")
                             if (inputEmail != "") {
                                 userController.checkEmail(userEmail: inputEmail)
                                 if (self.userController.returnChkEmail == false) {
@@ -94,7 +95,7 @@ struct JoinView: View {
                     UnderlineTextFieldView(text: $inputPW, textField: passwordView, placeholder: "비밀번호를 입력하세요")
                         .padding(.bottom, 32)
                     
-                    VStack {
+                    VStack(alignment: .leading) {
                             Text("비밀번호 확인").font(.system(size:16)).foregroundColor(Color("mainColor"))
                                 .fontWeight(.bold)
                             UnderlineTextFieldView(text: $inputPWChk, textField: passwordChkView, placeholder: "비밀번호를 다시 입력하세요")
@@ -103,7 +104,6 @@ struct JoinView: View {
                                     Text("비밀번호가 서로 일치하지 않습니다").font(.system(size: 14))
                                         .foregroundColor(Color("redPointColor"))
                                 }
-
                             }
                         }
                     
@@ -112,6 +112,18 @@ struct JoinView: View {
                 .padding(.bottom, 70)
                 
                 Button {
+                    if (inputEmail != "") {
+                        userController.checkEmail(userEmail: inputEmail)
+                        if (self.userController.returnChkEmail == false) {
+                            // 사용할 수 없는 아이디
+                            textChEmail = 1
+                            
+                        } else if (self.userController.returnChkEmail == true) {
+                            textChEmail = 2
+                            // 사용할 수 있음.
+                        }
+                    }
+                    
                     if (inputPW == inputPWChk && inputPW != "" && textChEmail == 2) {
                         // 잘 입력된 경우
                         // 입력값을 서버로 보내고 화면 전환
