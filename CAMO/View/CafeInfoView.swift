@@ -199,32 +199,34 @@ struct CafeInfoView: View {
             // 별점 및 리뷰
             
             VStack {
-                Button {
-                    reviewSettings = true
-                } label: {
-                    Label {
-                        Text("별점 및 리뷰 남기기")
-                            .font(.system(size: 16))
-                            .foregroundColor(.white)
-                    } icon : {
-                        Image(systemName: "pencil")
-                            .environment(\.symbolVariants, .none)
-                            .font(.system(size: 18))
-                            .foregroundColor(.white)
-                    }
-                    .frame(maxWidth: .infinity)
+                if (cafeController.cafeInfo.cafeId != cafe.cafeId) {
+                    Button {
+                        reviewSettings = true
+                    } label: {
+                        Label {
+                            Text("별점 및 리뷰 남기기")
+                                .font(.system(size: 16))
+                                .foregroundColor(.white)
+                        } icon : {
+                            Image(systemName: "pencil")
+                                .environment(\.symbolVariants, .none)
+                                .font(.system(size: 18))
+                                .foregroundColor(.white)
+                        }
+                        .frame(maxWidth: .infinity)
 
-                }
-                .padding(.vertical, 20)
-                .background(Color("mainColor"))
-                .cornerRadius(16)
-                .fullScreenCover(isPresented: $reviewSettings) {
-                    NavigationView {
-                        WriteReView(cafeId: cafeController.cafeInfo.cafeId, isPresented: $reviewSettings)
-    //                        .navigationBarHidden(false)
-                            .navigationBarBackButtonHidden(false)
                     }
-                    
+                    .padding(.vertical, 20)
+                    .background(Color("mainColor"))
+                    .cornerRadius(16)
+                    .fullScreenCover(isPresented: $reviewSettings) {
+                        NavigationView {
+                            WriteReView(cafeId: cafeController.cafeInfo.cafeId, isPresented: $reviewSettings)
+        //                        .navigationBarHidden(false)
+                                .navigationBarBackButtonHidden(false)
+                        }
+                        
+                    }
                 }
                 
                 if (self.reviewController.reviewList.count == 0) {
