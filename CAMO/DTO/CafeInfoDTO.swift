@@ -19,6 +19,7 @@ struct CafeInfoDTO: Codable {
     var cafeRewardstamp: Int // 카페 스탬프
     var couponUserstamp: Int // 사용자가 모은 스탬프
     var avgRating: Float
+//    var cafeImage: String
     
     init() {
         cafeId = ""
@@ -31,5 +32,6 @@ struct CafeInfoDTO: Codable {
         cafeRewardstamp = 0
         couponUserstamp = 0
         avgRating = 0
+//        cafeImage = ""
     }
 }

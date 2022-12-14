@@ -18,6 +18,9 @@ class UserController: ObservableObject {
     @Published var returnIsDeleted = false
 //    @Published var userProfile = User()
     
+    @Published var responseEmail = ResponseDTO()
+    @Published var returnChkEmail = false
+    
     // login
     func login(loginDTO: LoginDTO) {
         let url = host + "/user/login"
@@ -208,5 +211,46 @@ class UserController: ObservableObject {
                 self.returnIsDeleted = false
             }
         }
+    }
+    
+    func checkEmail(userEmail: String) {
+        let url = host + "/user/duplicate/" + userEmail
+        print("중복확인 url: \(url)")
+        
+        // URLRequest 객체 생성 (url 전달)
+        var request = URLRequest(url: URL(string: url)!)
+        // 메소드 지정
+        request.httpMethod = "GET"
+        // 헤더 정보 설정
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        AF.request(request).responseDecodable(of:ResponseDTO.self) { response in
+            switch response.result {
+            case .success(let value):
+                print("호출 성공 checkEmail")
+                self.responseEmail = value
+                print(value)
+                if (value.status == 409) {
+                    self.returnChkEmail = false
+                } else {
+                    self.returnChkEmail = true
+                }
+                print("\(self.returnChkEmail), \(value.status)")
+            case .failure(_):
+                print(response.result)
+                print("호출 실패 checkEmail")
+            }
+        }
+        
+    }
+}
+
+struct ResponseDTO: Codable {
+    var status: Int
+    var message: String
+    
+    init() {
+        status = 0
+        message = ""
     }
 }

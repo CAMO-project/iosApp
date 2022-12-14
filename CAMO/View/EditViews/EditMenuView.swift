@@ -21,8 +21,8 @@ struct EditMenuView: View {
     
     init(isPresented: Binding<Bool>) {
         self._isPresented = isPresented
-        cafeController.getCafe()
-        menuController.getMenuList(cafeId: cafe.cafeId)
+        self.cafeController.getCafe()
+        self.menuController.getMenuList(cafeId: cafe.cafeId)
     }
     
     let formatter: NumberFormatter = {
@@ -35,13 +35,19 @@ struct EditMenuView: View {
         
         VStack {
             
-            List(menuController.menuList) { menuListDTO in
-                MenuListEditRow(menuListDTO)
+            if(self.menuController.menuList.count == 0) {
+                Text("등록된 메뉴가 아직 없습니다.")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color("bgMainColor"))
+            } else {
+                List(self.menuController.menuList) { menuListDTO in
+                    MenuListEditRow(menuListDTO)
+                }
+                .listStyle(.plain)
+                .padding(.bottom, 1)
+                .padding(.horizontal, 30)
+                .background(Color("bgMainColor"))
             }
-            .listStyle(.plain)
-            .padding(.bottom, 1)
-            .padding(.horizontal, 30)
-            .background(Color("bgMainColor"))
             
         } // vstack
         .navigationTitle("메뉴 수정하기")
@@ -72,6 +78,7 @@ struct EditMenuView: View {
             Button("추가", action: {
                 menuController.menuRegister(menuRegi: Menu(menuId: 0, menuName: inputMenu, menuPrice: inputPrice, cafeId: cafeController.myCafe.cafeId))
                 popAddMenuAlert.toggle()
+                
             })
             Button("취소", role: .cancel, action: {})
         }, message: {

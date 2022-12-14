@@ -20,14 +20,20 @@ struct MyReviewListView: View {
     
     var body: some View {
         VStack {
-            
-            List(reviewController.myReviewList) { myReviewListDTO in
-                MyReviewListRow(myReviewListDTO)
+            if (reviewController.myReviewList.count == 0) {
+                Text("작성한 리뷰가 아직 없습니다")
+                    .foregroundColor(Color("grayTextColor"))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(30)
+            } else {
+                List(reviewController.myReviewList) { myReviewListDTO in
+                    MyReviewListRow(myReviewListDTO)
+                }
+                .listStyle(.plain)
+                .padding(.bottom, 1)
+                .padding(.horizontal, 30)
+                .background(Color("bgMainColor"))
             }
-            .listStyle(.plain)
-            .padding(.bottom, 1)
-            .padding(.horizontal, 30)
-            .background(Color("bgMainColor"))
             
         }// vstack
         .navigationTitle("내가 쓴 리뷰 모아보기")

@@ -42,7 +42,7 @@ struct CreateCafeView: View {
                 
                 Text("사업자 등록 번호").font(.system(size:16)).foregroundColor(Color("mainPointColor"))
                     .fontWeight(.bold)
-                UnderlineTextFieldView(text: $inputBusinessNum, textField: businessNumView, placeholder: "사업자 번호를 입력하세요")
+                UnderlineTextFieldView(text: $inputBusinessNum, textField: businessNumView, placeholder: "사업자 번호를 입력하세요 ('-' 제외)")
                     .padding(.bottom, 32)
                 
                 if (!textMsg) {

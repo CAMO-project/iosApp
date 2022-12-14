@@ -129,7 +129,7 @@ struct CafeListRow: View {
                             .environment(\.symbolVariants, .none)
                             .font(.system(size: 14))
                             .foregroundColor(.yellow)
-                        Text("\(round(cafeListDTO.avgRating*10)/10)")
+                        Text(String(format: "%.1f", self.cafeListDTO.avgRating))
                             .font(.system(size: 14))
                     } // hstack
                 } // hstack

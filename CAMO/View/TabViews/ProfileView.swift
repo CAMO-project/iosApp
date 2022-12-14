@@ -374,6 +374,10 @@ struct ProfileView: View {
                 
                 HStack {
                     Button {
+                        UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            exit(0)
+                        }
                     } label: {
                         Text("로그아웃")
                             .font(.system(size: 14))

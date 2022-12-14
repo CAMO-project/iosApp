@@ -12,27 +12,53 @@ struct CafeInfoView: View {
     @ObservedObject var cafeController = CafeController()
     @ObservedObject var menuController = MenuController()
     @ObservedObject var reviewController = ReviewController()
+//    @ObservedObject var imageController = ImageController()
     
     @State private var isActiveMenu: Bool = false
     @State private var isActiveWrite: Bool = false
     
     @State var reviewSettings: Bool = false
 
+    
+    var maxRating = 5
+
+    var offImage = Image(systemName: "star")
+    var onImage = Image(systemName: "star.fill")
+    
     init(_ cafeId: String) {
-        cafeController.getCafeInfo(cafeId: cafeId)
-        menuController.getNewMenu(cafeId: cafeId)
-        reviewController.getReivewList(cafeId: cafeId)
+        self.cafeController.getCafeInfo(cafeId: cafeId)
+        self.menuController.getNewMenu(cafeId: cafeId)
+        self.reviewController.getReivewList(cafeId: cafeId)
+        
+//        self.imageController.downloadFile(cafeImage: cafeController.cafeInfo.cafeImage)
     }
+
     
     var body: some View {
         ScrollView {
             VStack {
-                Image("testImage1")
+//                Image(uiImage: imageController.image!)
 //                    .renderingMode(.original)
-                    .resizable()
-                    .aspectRatio(1.0, contentMode: .fit)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .clipped() //프레임을 벗어나는 이미지 제거
+                if (cafeController.cafeInfo.cafeReward != "" && cafeController.cafeInfo.cafeIntroduce != "") {
+                    Image(cafeController.cafeInfo.cafeId)
+                        .resizable()
+                        .aspectRatio(1.0, contentMode: .fit)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .clipped() //프레임을 벗어나는 이미지 제거
+                } else {
+                    ZStack {
+                        Image("")
+                            .resizable()
+                            .aspectRatio(1.0, contentMode: .fit)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                            .clipped() //프레임을 벗어나는 이미지 제거
+                        Text("아직 등록된 사진이 없습니다")
+                            .foregroundColor(Color("grayTextColor"))
+                            .font(.system(size: 14))
+                    }
+                }
+                
+
                 
                 VStack(alignment: .leading) {
                     Label {
@@ -201,7 +227,7 @@ struct CafeInfoView: View {
                     
                 }
                 
-                if (reviewController.reviewList.count == 0) {
+                if (self.reviewController.reviewList.count == 0) {
                     HStack {
                         Text("별점")
                             .font(.system(size: 18))
@@ -236,9 +262,14 @@ struct CafeInfoView: View {
                             .fontWeight(.bold)
                             .foregroundColor(Color("mainPointColor"))
                             .padding(.trailing, 10)
-                        StarsView(rating: cafeController.cafeInfo.avgRating)
-                            .padding(.trailing, 10)
-                        Text("\(cafeController.cafeInfo.avgRating)")
+//                        StarsView(rating: cafeController.cafeInfo.avgRating)
+//                            .padding(.trailing, 10)
+                        ForEach(1..<maxRating + 1, id:\.self) {number in
+                            image(for: number)
+                                .font(.system(size: 20))
+                                .foregroundColor(.yellow)
+                        }
+                        Text(String(format: "%.1f", self.cafeController.cafeInfo.avgRating))
                             .font(.system(size: 14))
                         Spacer()
                     }
@@ -252,14 +283,14 @@ struct CafeInfoView: View {
                             .foregroundColor(Color("mainPointColor"))
                             .padding(.trailing, 10)
                         
-                        Text("\(reviewController.reviewList.count)개")
+                        Text("\(self.reviewController.reviewList.count)개")
                             .font(.system(size: 14))
                         Spacer()
                             
                     }
                     
                     VStack{
-                        List(reviewController.reviewList) { reviewListDTO in
+                        List(self.reviewController.reviewList) { reviewListDTO in
                             ReviewListRow(reviewListDTO)
                         }
                         .listStyle(.plain)
@@ -278,6 +309,22 @@ struct CafeInfoView: View {
         .background(Color("bgMainColor"))
         .onAppear() {
             print("reviewList: \(reviewController.reviewList)")
+        }
+        .refreshable {
+            self.cafeController.getCafeInfo(cafeId: self.cafeController.cafeInfo.cafeId)
+            self.reviewController.getReivewList(cafeId: self.cafeController.cafeInfo.cafeId)
+        }
+    }
+    
+    func image(for number: Int) -> Image {
+        // 별점이 5보다 작으면
+        print("\(number)")
+        if number > Int(cafeController.cafeInfo.avgRating) {
+            
+            return offImage ?? onImage
+        } else {
+            // 별점이 5인 경우
+            return onImage
         }
     }
 }
@@ -597,7 +644,7 @@ struct StarsView: View {
     private static let MAX_RATING: Float = 5 // Defines upper limit of the rating
     private static let COLOR = Color.yellow // The color of the stars
 
-    let rating: Float
+    var rating: Float
     private let fullCount: Int
     private let emptyCount: Int
     private let halfFullCount: Int
@@ -607,6 +654,8 @@ struct StarsView: View {
         fullCount = Int(rating)
         emptyCount = Int(StarsView.MAX_RATING - rating)
         halfFullCount = (Float(fullCount + emptyCount) < StarsView.MAX_RATING) ? 1 : 0
+        
+        print("rating: \(rating), fullCnt: \(fullCount), emptyCnt: \(emptyCount), halfFull: \(halfFullCount)")
     }
 
     var body: some View {
